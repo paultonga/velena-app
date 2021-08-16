@@ -11,7 +11,8 @@ export default StyleSheet.create({
     alignItems: 'center',
   },
   tabIcon: {
-    height: wp(4),
-    width: wp(4),
+    //height: wp(3),
+    //width: wp(3),
+    //marginBottom: hp(1),
   },
 });

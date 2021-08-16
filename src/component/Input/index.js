@@ -13,11 +13,17 @@ export default function Input({
   onTextChange,
   autoCapitalize,
   customContainerStyle,
+  error,
+  value,
+  keyboardType,
+  onFocus,
+  maxLength,
 }) {
   const [visible, toggle] = useState(false);
 
   const handleTextChange = text => {
     toggle(Boolean(text));
+    onTextChange(text);
   };
   return (
     <View style={[styles.container, customContainerStyle]}>
@@ -31,7 +37,12 @@ export default function Input({
         autoCapitalize={autoCapitalize}
         autoCorrect={false}
         autoCompleteType="off"
+        value={value}
+        keyboardType={keyboardType}
+        onFocus={onFocus}
+        maxLength={maxLength}
       />
+      {!!error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 }
@@ -63,5 +74,11 @@ const styles = StyleSheet.create({
     fontFamily: Fonts.regular,
     fontSize: wp(2.8),
     color: Colors.lightGreyText,
+  },
+  errorText: {
+    fontFamily: Fonts.regular,
+    fontSize: wp(2.8),
+    marginTop: hp(1.4),
+    color: 'red',
   },
 });

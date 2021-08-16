@@ -1,5 +1,13 @@
+import {gql} from '@apollo/client';
 import React, {Component} from 'react';
-import {Text, View, StyleSheet, Switch, TouchableOpacity} from 'react-native';
+import {
+  Text,
+  View,
+  StyleSheet,
+  Switch,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -9,10 +17,37 @@ import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
+import _ from 'lodash';
+import {loginUser} from '../../redux/user/actions';
+import { connect } from 'react-redux';
 
-export default class LoginScreen extends Component {
+class LoginScreen extends Component {
   state = {
     shouldRemember: false,
+    phone: '',
+    password: '',
+    loading: false,
+    errors: {},
+  };
+
+  validate = () => {
+    const {password, phone} = this.state;
+    const errors = {};
+
+    if (!phone) {
+      errors.phone = 'Phone is required';
+    }
+
+    if (!password || password.length < 7) {
+      errors.password = 'Password length should be atleast 7';
+    }
+
+    _.isEmpty(errors) ? this.login() : this.setState({errors});
+  };
+
+  login = async () => {
+    const {password, phone} = this.state;
+    this.props.loginUser({password, phone});
   };
 
   toggle = () => {
@@ -36,8 +71,22 @@ export default class LoginScreen extends Component {
     this.props.navigation.navigate('Forgot');
   };
 
+  handleInput = (source, text) => {
+    this.setState({
+      [source]: text,
+    });
+  };
+
+  handleFocus = name => {
+    const {errors} = this.state;
+    errors[name] = null;
+
+    this.setState({errors});
+  };
+
   render() {
-    const {shouldRemember} = this.state;
+    const {shouldRemember, errors, phone, password} = this.state;
+    const {loading} = this.props;
 
     return (
       <Screen>
@@ -45,8 +94,25 @@ export default class LoginScreen extends Component {
         <View style={styles.container}>
           <Text style={styles.header}>Log in</Text>
           <View style={styles.formContainer}>
-            <Input placeholder="Your Email" autoCapitalize="none" />
-            <Input placeholder="Password" isSecure autoCapitalize="none" />
+            <Input
+              onTextChange={text => this.handleInput('phone', text)}
+              onFocus={() => this.handleFocus('phone')}
+              value={phone}
+              placeholder="Phone number"
+              autoCapitalize="none"
+              error={errors?.phone}
+              keyboardType={'phone-pad'}
+              maxLength={11}
+            />
+            <Input
+              onTextChange={text => this.handleInput('password', text)}
+              onFocus={() => this.handleFocus('password')}
+              value={password}
+              placeholder="Password"
+              isSecure
+              autoCapitalize="none"
+              error={errors?.password}
+            />
             <View style={styles.subContainer}>
               <View style={styles.rememberContainer}>
                 <Switch
@@ -65,8 +131,13 @@ export default class LoginScreen extends Component {
             </View>
             <TouchableOpacity
               style={styles.submitButton}
-              onPress={this.gotoMain}>
-              <Text style={styles.submitButtonText}>Log in</Text>
+              disabled={loading}
+              onPress={this.validate}>
+              {loading ? (
+                <ActivityIndicator color="white" />
+              ) : (
+                <Text style={styles.submitButtonText}>Log in</Text>
+              )}
             </TouchableOpacity>
           </View>
         </View>
@@ -126,3 +197,12 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
 });
+
+const mapStateToProps = state => ({
+  loading: state.account.loading,
+});
+const mapDispatchToProps = dispatch => ({
+  loginUser: payload => dispatch(loginUser(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);

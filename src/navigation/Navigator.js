@@ -8,7 +8,12 @@ import LoginScreen from '../screens/Login';
 import RegisterScreen from '../screens/Register';
 import ForgotPasswordScreen from '../screens/Forgot';
 import sharedStyles from '../shared/styles';
-import {heightPercentageToDP as hp} from 'react-native-responsive-screen';
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from 'react-native-responsive-screen';
+import Icon from 'react-native-vector-icons/EvilIcons';
+
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -20,9 +25,16 @@ import FavoritesScreen from '../screens/Favorites';
 import ProfileScreen from '../screens/Profile';
 import Fonts from '../ui/Fonts';
 import Images from '../ui/Images';
+import Splash from '../screens/Splash';
+import { hasNotch } from 'react-native-device-info';
 
 const AuthStack = () => (
   <Stack.Navigator>
+    <Stack.Screen
+      name="Splash"
+      component={Splash}
+      options={{headerShown: false}}
+    />
     <Stack.Screen
       name="Intro"
       component={IntroScreen}
@@ -56,20 +68,22 @@ const MainTabNavigation = () => (
     initialRouteName="Search"
     tabBarOptions={{
       style: {
-        height: hp(9),
+        height: hasNotch ? hp(12) : hp(9),
       },
       keyboardHidesTabBar: true,
       activeTintColor: 'black',
       tabStyle: {paddingVertical: hp(2), alignSelf: 'center'},
-      labelStyle: {fontFamily: Fonts.bold, fontSize: 12},
+      labelStyle: {fontFamily: Fonts.regular, fontSize: 12},
     }}>
     <Tab.Screen
       options={{
         tabBarLabel: 'Explore',
         tabBarIcon: ({color, size, focused}) => (
-          <Image
-            source={Images.icons.search}
-            style={[sharedStyles.tabIcon, {tintColor: color}]}
+          <Icon
+            size={size}
+            color={color}
+            name="search"
+            style={sharedStyles.tabIcon}
           />
         ),
       }}
@@ -81,9 +95,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Deals',
         tabBarIcon: ({color, size, focused}) => (
-          <Image
-            source={Images.icons.deals}
-            style={[sharedStyles.tabIcon, {tintColor: color}]}
+          <Icon
+            size={size}
+            color={color}
+            name="tag"
+            style={sharedStyles.tabIcon}
           />
         ),
       }}
@@ -95,9 +111,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Bookings',
         tabBarIcon: ({color, size, focused}) => (
-          <Image
-            source={Images.icons.star}
-            style={[sharedStyles.tabIcon, {tintColor: color}]}
+          <Icon
+            size={size}
+            color={color}
+            name="star"
+            style={sharedStyles.tabIcon}
           />
         ),
       }}
@@ -109,9 +127,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Favorites',
         tabBarIcon: ({color, size, focused}) => (
-          <Image
-            source={Images.icons.heart}
-            style={[sharedStyles.tabIcon, {tintColor: color}]}
+          <Icon
+            size={size}
+            color={color}
+            name="heart"
+            style={sharedStyles.tabIcon}
           />
         ),
       }}
@@ -123,9 +143,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({color, size, focused}) => (
-          <Image
-            source={Images.icons.profile}
-            style={[sharedStyles.tabIcon, {tintColor: color}]}
+          <Icon
+            size={size}
+            color={color}
+            name="user"
+            style={sharedStyles.tabIcon}
           />
         ),
       }}

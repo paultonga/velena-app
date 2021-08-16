@@ -1,3 +1,4 @@
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {
   Text,
@@ -11,7 +12,9 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import { connect } from 'react-redux';
 import Screen from '../../component/Screen';
+import {setIntroViewed} from '../../redux/user/actions';
 
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
@@ -46,7 +49,7 @@ const Indicator = ({active = false}) => {
   );
 };
 
-export default class IntroScreen extends Component {
+class IntroScreen extends Component {
   state = {
     index: 0,
   };
@@ -54,6 +57,10 @@ export default class IntroScreen extends Component {
   gotoIntro = () => {
     this.props.navigation.navigate('Welcome');
   };
+
+  componentDidMount() {
+    this.props.setIntroViewed();
+  }
 
   _onViewableItemsChanged = ({viewableItems, changed}) => {
     const {index} = viewableItems[0];
@@ -172,3 +179,11 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
 });
+
+
+const mapDispatchToProps = dispatch => ({
+  setIntroViewed: () => dispatch(setIntroViewed()),
+});
+
+export default connect(null, mapDispatchToProps)(IntroScreen);
+

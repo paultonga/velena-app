@@ -152,6 +152,14 @@ android {
             keyAlias 'androiddebugkey'
             keyPassword 'android'
         }
+        release {
+            if (project.hasProperty('VELENA_RELEASE_STORE_FILE')) {
+                storeFile file(VELENA_RELEASE_STORE_FILE)
+                storePassword VELENA_RELEASE_STORE_PASSWORD
+                keyAlias VELENA_RELEASE_KEY_ALIAS
+                keyPassword VELENA_RELEASE_KEY_PASSWORD
+            }
+        }
     }
     buildTypes {
         debug {

@@ -6,5 +6,6 @@ export default {
     heart: require('../../assets/icons/icon-heart.png'),
     deals: require('../../assets/icons/Icon-deals.png'),
     star: require('../../assets/icons/icon-star.png'),
+    avatar: require('../../assets/images/avatar.png'),
   },
 };
