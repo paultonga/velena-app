@@ -21,41 +21,83 @@ import Images from '../../ui/Images';
 import Color from 'color';
 import FavoritesList from '../../component/Favorites';
 import PopularItemsList from '../../component/PopularDemand';
+import HorizontalSlider from '../../component/HorizontalSlider';
+import {gql} from '@apollo/client';
+import {client} from '../../../App';
+import _ from 'lodash';
 
-const IMAGE_SOURCE =
-  'https://unsplash.com/photos/sYIqGW3hufI/download?force=true&w=1920';
+const GET_EXPLORE_SCREEN_DATA = gql`
+  query GetExploreScreenData {
+    getExploreScreen {
+      popular {
+        id
+        title
+        description
+        thumbnail
+        hasDiscount
+        discountPrice
+        price
+      }
+      categories {
+        id
+        title
+        description
+        thumbnail
+      }
+    }
+  }
+`;
 
 class SearchScreen extends Component {
+  state = {
+    popular: [],
+    categories: [],
+    loading: false,
+  };
+
+  componentDidMount() {
+    this.getScreenData();
+  }
+
+  viewAllServices = () => {
+    this.props.navigation.navigate('Services');
+  };
+
+  onServicePressed = service => {
+    this.props.navigation.navigate('Service', {service});
+  };
+
+  getScreenData = async () => {
+    this.setState({loading: true});
+    const {
+      data: {
+        getExploreScreen: {categories, popular},
+      },
+    } = await client.query({
+      query: GET_EXPLORE_SCREEN_DATA,
+    });
+
+    this.setState({
+      loading: false,
+      categories,
+      popular,
+    });
+  };
+
   render() {
+    const {loading, popular, categories} = this.state;
     return (
-      <Screen hasStatusBar>
+      <Screen translucent barBackgroundColor={'transparent'}>
         <ScrollView>
-          <ImageBackground
-            source={{uri: IMAGE_SOURCE}}
-            resizeMode="cover"
-            style={styles.imageBackground}>
-            <View style={styles.overlay} />
-            <View style={styles.searchContainer}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="Find stores and deals"
-                placeholderTextColor={Colors.lightGreyText}
-              />
-              <Image
-                source={Images.icons.search}
-                style={styles.searchIcon}
-                resizeMode="center"
-              />
-            </View>
-            <View style={styles.titleContainer}>
-              <Text style={styles.title}>Explore styles.</Text>
-              <TouchableOpacity style={styles.bookButton}>
-                <Text style={styles.bookButtonText}>Book now</Text>
-              </TouchableOpacity>
-            </View>
-          </ImageBackground>
-          <FavoritesList />
-          <PopularItemsList />
+          <HorizontalSlider />
+          {!_.isEmpty(popular) && (
+            <FavoritesList
+              data={popular}
+              onViewAllPressed={this.viewAllServices}
+              onServicePressed={this.onServicePressed}
+            />
+          )}
+          {!_.isEmpty(categories) && <PopularItemsList data={categories} />}
         </ScrollView>
       </Screen>
     );

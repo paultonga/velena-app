@@ -1,13 +1,17 @@
 import React from 'react';
-import {FlatList, Image, View, Text, StyleSheet} from 'react-native';
-import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
+import {FlatList, Image, View, Text, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  widthPercentageToDP as wp,
+  heightPercentageToDP as hp,
+} from 'react-native-responsive-screen';
 
 import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
+import LinearGradient from 'react-native-linear-gradient';
 
 const PopularData = [
   {
-    title: 'Summer Hair',
+    title: 'Summer Hair Make Up',
     thumbnail:
       'https://unsplash.com/photos/4nulm-JUYFo/download?force=true&w=640',
   },
@@ -20,19 +24,26 @@ const PopularData = [
 
 const PopularItem = ({item}) => {
   return (
-    <View style={[styles.itemContainer, styles.shadowStyle]}>
+    <TouchableOpacity style={[styles.itemContainer, styles.shadowStyle]}>
       <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
-      <Text style={styles.itemTitle}>{item.title}</Text>
-    </View>
+      <LinearGradient
+        style={styles.linearGradient}
+        locations={[0, 1.0]}
+        colors={['rgba(0,0,0,0.00)', 'rgba(0,0,0,0.80)']}>
+        <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
+          {item.title}
+        </Text>
+      </LinearGradient>
+    </TouchableOpacity>
   );
 };
 
-export default function PopularItemsList() {
+export default function PopularItemsList({ data }) {
   return (
-    <View style={styles.favoritesContainer}>
-      <Text style={styles.header}>Popular Styles</Text>
+    <View style={styles.container}>
+      <Text style={styles.header}>Service Categories</Text>
       <FlatList
-        data={PopularData}
+        data={data}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => <PopularItem item={item} />}
         horizontal
@@ -48,8 +59,8 @@ const styles = StyleSheet.create({
     fontSize: wp(8),
     color: Colors.headerGreyText,
   },
-  favoritesContainer: {
-    marginTop: hp(3),
+  container: {
+    marginTop: hp(1),
     paddingHorizontal: wp(5),
   },
   shadowStyle: {
@@ -69,20 +80,36 @@ const styles = StyleSheet.create({
   itemContainer: {
     marginRight: wp(6),
     height: hp(20),
-    width: wp(75),
-    borderRadius: 20,
+    width: wp(50),
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
   thumbnail: {
     height: hp(20),
-    width: wp(75),
-    borderRadius: 15,
+    width: wp(50),
+    borderTopRightRadius: 15,
+    borderTopLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
   itemTitle: {
     position: 'absolute',
-    bottom: 3,
-    left: wp(6),
+    marginLeft: wp(4.5),
+    marginRight: wp(3),
+    bottom: hp(2),
     fontFamily: Fonts.header,
-    fontSize: wp(8),
+    fontSize: wp(6),
+    lineHeight: wp(5.8),
     color: Colors.white,
+  },
+  linearGradient: {
+    height: hp(10),
+    width: wp(50),
+    position: 'absolute',
+    bottom: 0,
+    borderBottomRightRadius: 15,
+    borderBottomLeftRadius: 15,
   },
 });

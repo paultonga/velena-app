@@ -18,35 +18,29 @@ import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
 import {client, Client} from '../../../App';
-import Icon from 'react-native-vector-icons/Ionicons';
-import moment from 'moment';
+import { STATUS_BAR_STYLES } from '../../utils/constants';
 
-export const GET_BOOKINGS_QUERY = gql`
-  query GetBookingss {
-    getBookings {
+const GET_SERVICES_QUERY = gql`
+  query GetServices {
+    getServices {
       id
-      startDate
-      isFlexible
-      service {
-        id
-        title
-        description
-        hasDiscount
-        discountPrice
-        price
-        thumbnail
-      }
+      title
+      description
+      hasDiscount
+      discountPrice
+      price
+      thumbnail
     }
   }
 `;
 
-class BookingssScreen extends Component {
+class ServicesScreen extends Component {
   state = {
-    bookings: [],
+    services: [],
   };
 
   componentDidMount() {
-    this.fetchBookings();
+    this.fetchServices();
   }
 
   onServicePressed = service => {
@@ -57,46 +51,50 @@ class BookingssScreen extends Component {
     this.props.navigation.goBack();
   };
 
-  fetchBookings = async () => {
+  fetchServices = async () => {
     const {
-      data: {getBookings},
+      data: {getServices},
     } = await client.query({
-      query: GET_BOOKINGS_QUERY,
+      query: GET_SERVICES_QUERY,
     });
-    this.setState({bookings: getBookings});
+    this.setState({services: getServices});
   };
 
   renderItem = ({item}) => {
-    const {service} = item;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
-        onPress={() => this.onServicePressed(service)}>
+        onPress={() => this.onServicePressed(item)}>
         <Image
-          source={{uri: service.thumbnail}}
+          source={{uri: item.thumbnail}}
           style={[styles.itemThumbnail, styles.shadowStyle]}
         />
         <View style={styles.itemDetails}>
-          <Text style={styles.itemTitle}>{service.title}</Text>
-          <Text style={styles.itemDescription}>{service.description}</Text>
-          <View style={styles.timeContainer}>
-            <Icon name="time" size={wp(5)} color={Colors.buttonGrey}/>
-            <Text style={styles.time}>{moment(item.startDate).format('MMM Do YY')}</Text>
+          <Text style={styles.itemTitle}>{item.title}</Text>
+          <Text style={styles.itemDescription}>{item.description}</Text>
+          <View style={styles.priceContainer}>
+            <Text style={styles.price}>
+              {item.hasDiscount ? item.discountPrice : item.price}
+            </Text>
+            <Text style={styles.currency}>tl</Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
   render() {
-    const {bookings} = this.state;
+    const {services} = this.state;
     return (
-      <Screen>
+      <Screen
+        statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
+        barBackgroundColor={'white'}>
+        <NavHeader hasBackIcon leftAction={this.goBack} />
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Bookings</Text>
+            <Text style={styles.header}>Services</Text>
           </View>
 
-          <FlatList data={bookings} renderItem={this.renderItem} />
+          <FlatList data={services} renderItem={this.renderItem} />
         </ScrollView>
       </Screen>
     );
@@ -106,11 +104,9 @@ class BookingssScreen extends Component {
 const styles = StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: wp(8),
-    paddingTop: hp(10),
   },
   pageHeader: {
     width: wp(100),
-    marginBottom: hp(2),
   },
   header: {
     fontFamily: Fonts.header,
@@ -156,14 +152,13 @@ const styles = StyleSheet.create({
     width: '85%',
     flexWrap: 'wrap',
   },
-  timeContainer: {
+  priceContainer: {
     flexDirection: 'row',
-    width: wp(70),
+    width: wp(20),
   },
-  time: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
-    marginLeft: wp(2),
+  price: {
+    fontFamily: Fonts.light,
+    fontSize: wp(5),
   },
   currency: {
     fontFamily: Fonts.regular,
@@ -171,4 +166,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BookingssScreen;
+export default ServicesScreen;

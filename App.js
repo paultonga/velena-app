@@ -26,6 +26,7 @@ import { persistor, store } from './src/redux/store';
 import { PersistGate } from 'redux-persist/integration/react';
 
 const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
+const API_URL_LOCAL = 'https://7b8b4dad9cb2.ngrok.io/graphql';
 
 const httpLink = new createHttpLink({uri: API_URL});
 

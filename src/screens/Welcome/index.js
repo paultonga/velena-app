@@ -72,7 +72,7 @@ const styles = StyleSheet.create({
   button: {
     width: wp(80),
     backgroundColor: Colors.white,
-    height: hp(6),
+    height: hp(6.5),
     borderRadius: 10,
     alignSelf: 'center',
     alignItems: 'center',
@@ -80,8 +80,10 @@ const styles = StyleSheet.create({
     marginTop: hp(25),
   },
   buttonText: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
+    fontFamily: Fonts.bold,
+    fontSize: wp(3),
+    letterSpacing: 1,
+    textTransform: 'uppercase',
   },
   bottom: {
     flexDirection: 'row',

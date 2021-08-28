@@ -70,6 +70,7 @@ export default function UserReducer(state = INITIAL, action) {
       return {
         ...state,
         hasViewedIntro: true,
+        loading: false,
       };
     }
     default: {

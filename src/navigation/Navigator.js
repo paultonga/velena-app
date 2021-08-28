@@ -1,5 +1,4 @@
 import React from 'react';
-import {Image} from 'react-native';
 import {createStackNavigator} from '@react-navigation/stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import WelcomeScreen from '../screens/Welcome';
@@ -12,8 +11,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/EvilIcons';
-
+import Icon from 'react-native-vector-icons/Feather';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -24,9 +22,30 @@ import BookingsScreen from '../screens/Bookings';
 import FavoritesScreen from '../screens/Favorites';
 import ProfileScreen from '../screens/Profile';
 import Fonts from '../ui/Fonts';
-import Images from '../ui/Images';
 import Splash from '../screens/Splash';
-import { hasNotch } from 'react-native-device-info';
+import ServiceScreen from '../screens/ServiceScreen';
+import ServicesScreen from '../screens/ServicesScreen';
+import {isAndroid, hasNotch} from '../utils/platform';
+
+const ExploreScreenStack = () => (
+  <Stack.Navigator>
+    <Stack.Screen
+      name="ExploreScreen"
+      component={SearchScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Services"
+      component={ServicesScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Service"
+      component={ServiceScreen}
+      options={{headerShown: false}}
+    />
+  </Stack.Navigator>
+);
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -68,26 +87,33 @@ const MainTabNavigation = () => (
     initialRouteName="Search"
     tabBarOptions={{
       style: {
-        height: hasNotch ? hp(12) : hp(9),
+        height: isAndroid ? hp(10) : hp(12),
+        paddingBottom: hp(1),
       },
       keyboardHidesTabBar: true,
       activeTintColor: 'black',
-      tabStyle: {paddingVertical: hp(2), alignSelf: 'center'},
-      labelStyle: {fontFamily: Fonts.regular, fontSize: 12},
+      tabStyle: {
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+      },
+      labelStyle: {
+        fontFamily: Fonts.bold,
+        fontSize: wp(3.5),
+        lineHeight: wp(3.5),
+      },
+      iconStyle: {
+        margin: 0,
+      },
     }}>
     <Tab.Screen
       options={{
         tabBarLabel: 'Explore',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon
-            size={size}
-            color={color}
-            name="search"
-            style={sharedStyles.tabIcon}
-          />
+          <Icon size={size} color={color} name="search" />
         ),
       }}
-      component={SearchScreen}
+      component={ExploreScreenStack}
       name="Search"
     />
 
@@ -95,12 +121,7 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Deals',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon
-            size={size}
-            color={color}
-            name="tag"
-            style={sharedStyles.tabIcon}
-          />
+          <Icon size={size} color={color} name="tag" />
         ),
       }}
       component={DealsScreen}
@@ -111,12 +132,7 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Bookings',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon
-            size={size}
-            color={color}
-            name="star"
-            style={sharedStyles.tabIcon}
-          />
+          <Icon size={size} color={color} name="star" />
         ),
       }}
       component={BookingsScreen}
@@ -127,12 +143,7 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Favorites',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon
-            size={size}
-            color={color}
-            name="heart"
-            style={sharedStyles.tabIcon}
-          />
+          <Icon size={size} color={color} name="heart" />
         ),
       }}
       component={FavoritesScreen}
@@ -143,12 +154,7 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon
-            size={size}
-            color={color}
-            name="user"
-            style={sharedStyles.tabIcon}
-          />
+          <Icon size={size} color={color} name="user" />
         ),
       }}
       component={ProfileScreen}

@@ -10,66 +10,92 @@ function* logoutSaga() {
 }
 
 function* loginUserSaga({payload}) {
-  const variables = {
-    phone: payload.phone,
-    password: payload.password,
-  };
-
-  let response = yield call(client.mutate, {
-    mutation: LOGIN_USER,
-    variables,
-  });
-
-  if (!response.error && response.data.login?.token) {
-    const {
-      data: {
-        login: {user, token},
-      },
-    } = response;
-    yield put({
-      type: actions.Types.LOGIN_SUCCESS,
-      payload: {sessionToken: token, user},
+  try {
+    const variables = {
+      phone: payload.phone,
+      password: payload.password,
+    };
+  
+    let response = yield call(client.mutate, {
+      mutation: LOGIN_USER,
+      variables,
     });
-    yield navigation.replace('Main');
-  } else {
+  
+    if (!response.error && response.data.login?.success) {
+      const {
+        data: {
+          login: {
+            success,
+            message,
+            result: {user, token},
+          },
+        },
+      } = response;
+      yield put({
+        type: actions.Types.LOGIN_SUCCESS,
+        payload: {sessionToken: token, user},
+      });
+      yield navigation.replace('Main');
+    } else {
+      yield put({
+        type: actions.Types.LOGIN_ERROR,
+        payload: {
+          error: response.data.login?.message || 'Unable to login user.',
+        },
+      });
+    }
+  } catch (error) {
     yield put({
       type: actions.Types.LOGIN_ERROR,
       payload: {
-        error: response.data.login?.message || 'Unable to login user.',
+        error,
       },
     });
   }
 }
 
 function* registerUserSaga({payload}) {
-  const variables = {
-    phone: payload.phone,
-    password: payload.password,
-    firstName: payload.firstName,
-    lastName: payload.lastName,
-  };
-
-  let response = yield call(client.mutate, {
-    mutation: REGISTER_USER,
-    variables,
-  });
-
-  if (!response.error && response.data.register?.token) {
-    const {
-      data: {
-        register: {user, token},
-      },
-    } = response;
-    yield put({
-      type: actions.Types.SIGNUP_SUCCESS,
-      payload: {sessionToken: token, user},
+  try {
+    const variables = {
+      phone: payload.phone,
+      password: payload.password,
+      firstName: payload.firstName,
+      lastName: payload.lastName,
+    };
+  
+    let response = yield call(client.mutate, {
+      mutation: REGISTER_USER,
+      variables,
     });
-    yield navigation.replace('Main');
-  } else {
+
+    if (!response.error && response.data.register?.success) {
+      const {
+        data: {
+          register: {
+            success,
+            message,
+            result: {user, token},
+          },
+        },
+      } = response;
+      yield put({
+        type: actions.Types.SIGNUP_SUCCESS,
+        payload: {sessionToken: token, user},
+      });
+      yield navigation.replace('Main');
+    } else {
+      yield put({
+        type: actions.Types.SIGNUP_ERROR,
+        payload: {
+          error: response.data.register?.message || 'Unable to create account.',
+        },
+      });
+    }
+  } catch (error) {
     yield put({
       type: actions.Types.SIGNUP_ERROR,
       payload: {
-        error: response.data.register?.message || 'Unable to create account.',
+        error: error,
       },
     });
   }
@@ -82,7 +108,6 @@ function* watchLoginSaga() {
 function* watchRegisterSaga() {
   yield takeLatest(actions.Types.SIGNUP, registerUserSaga);
 }
-
 
 function* watchLogoutSaga() {
   yield takeLatest(actions.Types.LOGOUT, logoutSaga);

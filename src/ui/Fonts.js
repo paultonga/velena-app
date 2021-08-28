@@ -1,6 +1,8 @@
 export default {
   header: 'RozhaOne-Regular',
-  regular: 'Roboto-Regular',
-  bold: 'Roboto-Bold',
-  light: 'Roboto-Light',
+  regular: 'Qartella-Regular',
+  bold: 'Qartella-Bold',
+  extraBold: 'Qartella-ExtraBold',
+  heavy: 'Qartella-Heavy',
+  light: 'Qartella-Light',
 };

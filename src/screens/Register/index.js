@@ -7,13 +7,14 @@ import {
   Switch,
   TouchableOpacity,
   ActivityIndicator,
+  ScrollView,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { client } from '../../../App';
+import {client} from '../../../App';
 import Input from '../../component/Input';
 import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
@@ -21,8 +22,8 @@ import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
 import _ from 'lodash';
 import {signUpUser} from '../../redux/user/actions';
-import { connect } from 'react-redux';
-
+import {connect} from 'react-redux';
+import {STATUS_BAR_STYLES} from '../../utils/constants';
 
 class RegisterScreen extends Component {
   state = {
@@ -89,80 +90,77 @@ class RegisterScreen extends Component {
   };
 
   render() {
-    const {
-      errors,
-      firstName,
-      lastName,
-      phone,
-      password,
-      confirmPassword,
-    } = this.state;
+    const {errors, firstName, lastName, phone, password, confirmPassword} =
+      this.state;
     const {loading} = this.props;
     return (
-      <Screen>
-        <NavHeader
-          hasBackIcon
-          leftAction={this.goBack}
-          rightActionText="Log in"
-          rightAction={this.gotoLogin}
-        />
-        <View style={styles.container}>
-          <Text style={styles.header}>Sign up</Text>
-          <View style={styles.formContainer}>
-            <Input
-              onTextChange={text => this.handleInput('firstName', text)}
-              onFocus={() => this.handleFocus('firstName')}
-              value={firstName}
-              placeholder="First name"
-              autoCapitalize="words"
-              error={errors?.firstName}
-            />
-            <Input
-              onTextChange={text => this.handleInput('lastName', text)}
-              value={lastName}
-              placeholder="Last name"
-              autoCapitalize="words"
-            />
-            <Input
-              onTextChange={text => this.handleInput('phone', text)}
-              onFocus={() => this.handleFocus('phone')}
-              value={phone}
-              placeholder="Phone number"
-              autoCapitalize="none"
-              error={errors?.phone}
-              keyboardType={'phone-pad'}
-              maxLength={11}
-            />
-            <Input
-              onTextChange={text => this.handleInput('password', text)}
-              onFocus={() => this.handleFocus('password')}
-              value={password}
-              placeholder="Password"
-              isSecure
-              autoCapitalize="none"
-              error={errors?.password}
-            />
-            <Input
-              onTextChange={text => this.handleInput('confirmPassword', text)}
-              onFocus={() => this.handleFocus('confirmPassword')}
-              value={confirmPassword}
-              placeholder="Confirm password"
-              isSecure
-              autoCapitalize="none"
-              error={errors?.confirmPassword}
-            />
-            <TouchableOpacity
-              style={styles.submitButton}
-              disabled={loading}
-              onPress={this.validate}>
-              {loading ? (
-                <ActivityIndicator color="white" />
-              ) : (
-                <Text style={styles.submitButtonText}>Create account</Text>
-              )}
-            </TouchableOpacity>
+      <Screen
+        statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
+        barBackgroundColor={'white'}>
+          <NavHeader
+            hasBackIcon
+            leftAction={this.goBack}
+            rightActionText="Log in"
+            rightAction={this.gotoLogin}
+          />
+          <View style={styles.container}>
+            <Text style={styles.header}>Sign up</Text>
+            <View style={styles.formContainer}>
+              <Input
+                onTextChange={text => this.handleInput('firstName', text)}
+                onFocus={() => this.handleFocus('firstName')}
+                value={firstName}
+                placeholder="first name"
+                autoCapitalize="words"
+                error={errors?.firstName}
+              />
+              <Input
+                onTextChange={text => this.handleInput('lastName', text)}
+                value={lastName}
+                placeholder="last name"
+                autoCapitalize="words"
+              />
+              <Input
+                onTextChange={text => this.handleInput('phone', text)}
+                onFocus={() => this.handleFocus('phone')}
+                value={phone}
+                placeholder="phone number"
+                autoCapitalize="none"
+                error={errors?.phone}
+                keyboardType={'phone-pad'}
+                maxLength={11}
+              />
+              <Input
+                onTextChange={text => this.handleInput('password', text)}
+                onFocus={() => this.handleFocus('password')}
+                value={password}
+                placeholder="password"
+                isSecure
+                autoCapitalize="none"
+                error={errors?.password}
+              />
+              <Input
+                onTextChange={text => this.handleInput('confirmPassword', text)}
+                onFocus={() => this.handleFocus('confirmPassword')}
+                value={confirmPassword}
+                placeholder="confirm password"
+                isSecure
+                autoCapitalize="none"
+                error={errors?.confirmPassword}
+              />
+              <TouchableOpacity
+                style={styles.submitButton}
+                disabled={loading}
+                onPress={this.validate}>
+                {loading ? (
+                  <ActivityIndicator color="white" />
+                ) : (
+                  <Text style={styles.submitButtonText}>Create account</Text>
+                )}
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
+
       </Screen>
     );
   }
@@ -170,7 +168,7 @@ class RegisterScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: wp(8),
+    paddingLeft: wp(5),
     paddingRight: wp(5),
     paddingTop: hp(4),
   },
@@ -181,8 +179,9 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     marginTop: hp(1),
-    height: hp(42),
+    //height: hp(42),
     justifyContent: 'space-between',
+    alignSelf: 'center',
   },
   subContainer: {
     width: wp(80),
@@ -209,13 +208,15 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.buttonGrey,
     height: hp(6),
     borderRadius: 10,
-    marginTop: hp(2),
+    marginTop: hp(4),
     alignItems: 'center',
     justifyContent: 'center',
   },
   submitButtonText: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
+    fontFamily: Fonts.bold,
+    fontSize: wp(3.2),
+    letterSpacing: 2,
+    textTransform: 'uppercase',
     color: Colors.white,
   },
 });

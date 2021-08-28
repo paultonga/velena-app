@@ -31,7 +31,7 @@ export default function Input({
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={Colors.lightGreyText}
-        secureTextEntry={isSecure}
+        secureTextEntry={!!value && isSecure}
         onChangeText={handleTextChange}
         style={styles.input}
         autoCapitalize={autoCapitalize}
@@ -41,6 +41,7 @@ export default function Input({
         keyboardType={keyboardType}
         onFocus={onFocus}
         maxLength={maxLength}
+        underlineColorAndroid={Colors.black}
       />
       {!!error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -50,9 +51,8 @@ export default function Input({
 const styles = StyleSheet.create({
   container: {
     width: wp(80),
-    height: hp(5.5),
-    borderBottomColor: Colors.headerGreyText,
-    borderBottomWidth: 1,
+    height: hp(6),
+    marginVertical: hp(1),
   },
   input: {
     width: wp(80),
@@ -61,7 +61,6 @@ const styles = StyleSheet.create({
     color: Colors.headerGreyText,
     ...Platform.select({
       android: {
-        height: hp(5.2),
         marginTop: hp(1),
       },
       ios: {
@@ -76,9 +75,11 @@ const styles = StyleSheet.create({
     color: Colors.lightGreyText,
   },
   errorText: {
-    fontFamily: Fonts.regular,
+    fontFamily: Fonts.bold,
     fontSize: wp(2.8),
-    marginTop: hp(1.4),
+    marginTop: hp(-0.6),
+    marginLeft: wp(1),
+    textTransform: 'lowercase',
     color: 'red',
   },
 });

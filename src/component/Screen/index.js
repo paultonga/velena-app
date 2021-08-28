@@ -3,10 +3,22 @@ import {StatusBar, View} from 'react-native';
 
 class Screen extends Component {
   render() {
-    const {hasStatusBar, statusBarStyle, children} = this.props;
+    const {
+      hideStatusBar,
+      statusBarStyle,
+      barBackgroundColor,
+      children,
+      translucent,
+    } = this.props;
     return (
       <>
-        {hasStatusBar && <StatusBar />}
+        {!hideStatusBar && (
+          <StatusBar
+            barStyle={statusBarStyle}
+            translucent={translucent}
+            backgroundColor={barBackgroundColor}
+          />
+        )}
         {children}
       </>
     );

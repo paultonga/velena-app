@@ -20,13 +20,13 @@ import Fonts from '../../ui/Fonts';
 import _ from 'lodash';
 import {loginUser} from '../../redux/user/actions';
 import { connect } from 'react-redux';
+import { STATUS_BAR_STYLES } from '../../utils/constants';
 
 class LoginScreen extends Component {
   state = {
     shouldRemember: false,
     phone: '',
     password: '',
-    loading: false,
     errors: {},
   };
 
@@ -89,7 +89,9 @@ class LoginScreen extends Component {
     const {loading} = this.props;
 
     return (
-      <Screen>
+      <Screen
+        statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
+        barBackgroundColor={'white'}>
         <NavHeader hasBackIcon leftAction={this.goBack} />
         <View style={styles.container}>
           <Text style={styles.header}>Log in</Text>
@@ -98,7 +100,7 @@ class LoginScreen extends Component {
               onTextChange={text => this.handleInput('phone', text)}
               onFocus={() => this.handleFocus('phone')}
               value={phone}
-              placeholder="Phone number"
+              placeholder="phone number"
               autoCapitalize="none"
               error={errors?.phone}
               keyboardType={'phone-pad'}
@@ -108,7 +110,7 @@ class LoginScreen extends Component {
               onTextChange={text => this.handleInput('password', text)}
               onFocus={() => this.handleFocus('password')}
               value={password}
-              placeholder="Password"
+              placeholder="password"
               isSecure
               autoCapitalize="none"
               error={errors?.password}
@@ -136,7 +138,7 @@ class LoginScreen extends Component {
               {loading ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text style={styles.submitButtonText}>Log in</Text>
+                <Text style={styles.submitButtonText}>LOG IN</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -148,7 +150,7 @@ class LoginScreen extends Component {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: wp(8),
+    paddingLeft: wp(5),
     paddingRight: wp(5),
     paddingTop: hp(4),
   },
@@ -161,6 +163,7 @@ const styles = StyleSheet.create({
     marginTop: hp(1.5),
     height: hp(30),
     justifyContent: 'space-between',
+    alignSelf: 'center',
   },
   subContainer: {
     width: wp(80),
@@ -187,13 +190,14 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.buttonGrey,
     height: hp(6),
     borderRadius: 10,
-    //alignSelf: 'center',
+    alignSelf: 'center',
     alignItems: 'center',
     justifyContent: 'center',
   },
   submitButtonText: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
+    fontFamily: Fonts.bold,
+    fontSize: wp(3.2),
+    letterSpacing: 2,
     color: Colors.white,
   },
 });

@@ -3,14 +3,15 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
-  TouchableOpacity,
   Platform,
 } from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
+import Ripple from 'react-native-material-ripple';
+import Icon from 'react-native-vector-icons/AntDesign';
+
 import Images from '../../ui/Images';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
@@ -20,19 +21,33 @@ export default function NavHeader({
   rightActionText,
   rightAction,
   leftAction,
+  hasBottomBorder,
 }) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, hasBottomBorder && styles.bottomBorder]}>
       {hasBackIcon && (
-        <TouchableOpacity style={styles.backButton} onPress={leftAction}>
-          <Image source={Images.icons.leftArrow} style={styles.backIcon} />
-        </TouchableOpacity>
+        <Ripple
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+          rippleContainerBorderRadius={wp(3)}
+          rippleCentered={true}
+          rippleOpacity={0.7}
+          rippleDuration={800}
+          style={styles.backButton}
+          onPress={leftAction}>
+          <Icon name="arrowleft" color={Colors.black} size={wp(6)} />
+        </Ripple>
       )}
 
       {!!rightActionText && (
-        <TouchableOpacity style={styles.rightActionButton} onPress={rightAction}>
+        <Ripple
+          rippleContainerBorderRadius={wp(3)}
+          rippleCentered={true}
+          rippleOpacity={0.7}
+          rippleDuration={800}
+          style={styles.rightActionButton}
+          onPress={rightAction}>
           <Text style={styles.rightActionButtonText}>{rightActionText}</Text>
-        </TouchableOpacity>
+        </Ripple>
       )}
     </View>
   );
@@ -41,33 +56,45 @@ export default function NavHeader({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    height: Platform.OS === 'ios' ? hp(10) : hp(6),
+    height: Platform.OS === 'ios' ? hp(12) : hp(6.5),
     width: wp(100),
     flexDirection: 'row',
+  },
+  bottomBorder: {
     elevation: 1,
     shadowOpacity: 0.2,
     shadowColor: Colors.black,
-    shadowRadius: 3,
+    shadowRadius: 1,
     shadowOffset: {
       height: 1,
       width: 0,
     },
   },
   backButton: {
+    height: wp(10),
+    width: wp(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(3),
     position: 'absolute',
-    left: wp(8),
-    bottom: hp(1.5),
+    left: wp(5),
+    bottom: hp(1),
+    alignSelf: 'flex-start',
   },
   rightActionButton: {
+    height: wp(10),
+    width: wp(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(3),
     position: 'absolute',
     right: wp(5),
-    bottom: hp(1.5),
-  },
-  backIcon: {
-    width: wp(5),
+    bottom: hp(1),
   },
   rightActionButtonText: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
+    fontFamily: Fonts.extraBold,
+    textTransform: 'uppercase',
+    letterSpacing: 1,
+    fontSize: wp(3.5),
   },
 });

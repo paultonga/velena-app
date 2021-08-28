@@ -2,8 +2,10 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import {connect} from 'react-redux';
+import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
+import { STATUS_BAR_STYLES } from '../../utils/constants';
 
 class Splash extends Component {
   navigate = async () => {
@@ -24,9 +26,13 @@ class Splash extends Component {
   render() {
     this.navigate();
     return (
-      <View style={styles.container}>
-        <Text style={styles.header}>Velena Beauty</Text>
-      </View>
+      <Screen
+        statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
+        barBackgroundColor={'white'}>
+        <View style={styles.container}>
+          <Text style={styles.header}>Velena Beauty</Text>
+        </View>
+      </Screen>
     );
   }
 }
