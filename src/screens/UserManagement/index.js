@@ -4,17 +4,17 @@ import {Text, View, FlatList, Image, TouchableOpacity} from 'react-native';
 import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import {STATUS_BAR_STYLES} from '../../utils/constants';
-import {GET_SERVICES_QUERY} from './graphql';
+import {GET_USERS_QUERY} from './graphql';
 import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
+import Images from '../../ui/Images';
+import UserManagementModal from '../../component/UserManagementModal';
 
-const ServicesScreen = ({navigation}) => {
-  const {
-    loading,
-    error,
-    data,
-    refetch,
-  } = useQuery(GET_SERVICES_QUERY);
+const UserManagementScreen = ({navigation}) => {
+  const [user, setUser] = React.useState(null);
+  const [modalVisible, setModalVisible] = React.useState(false);
+
+  const {loading, error, data, refetch} = useQuery(GET_USERS_QUERY);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -23,8 +23,16 @@ const ServicesScreen = ({navigation}) => {
     }, [refetch]),
   );
 
-  const onServicePressed = service => {
-    navigation.navigate('Service', {service});
+  const onClose = () => setModalVisible(false);
+  
+  const onComplete = () => {
+      onClose();
+      refetch();
+  };
+
+  const onUserPressed = selectedUser => {
+    setUser(selectedUser);
+    setModalVisible(true);    
   };
 
   const goBack = () => {
@@ -32,30 +40,22 @@ const ServicesScreen = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
+    const userAvatar = item?.avatar ? {uri: item.avatar} : Images.icons.avatar;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
-        onPress={() => onServicePressed(item)}>
+        onPress={() => onUserPressed(item)}>
         <Image
-          source={{uri: item.thumbnail}}
-          style={[styles.itemThumbnail, styles.shadowStyle]}
+          source={userAvatar}
+          style={[styles.itemAvatar, styles.shadowStyle]}
         />
         <View style={styles.itemDetails}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
-            {item.title}
+            {`${item.firstName} ${item.lastName}`}
           </Text>
-          <Text
-            numberOfLines={2}
-            ellipsizeMode="tail"
-            style={styles.itemDescription}>
-            {item.description}
+          <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemType}>
+           {`${item.phone} - ${item.role}`}
           </Text>
-          <View style={styles.priceContainer}>
-            <Text style={styles.price}>
-              {item.hasDiscount ? item.discountPrice : item.price}
-            </Text>
-            <Text style={styles.currency}>tl</Text>
-          </View>
         </View>
       </TouchableOpacity>
     );
@@ -63,10 +63,11 @@ const ServicesScreen = ({navigation}) => {
 
   const _keyExtractor = (item, index) => `keyExtractor-${index}-${item.id}`;
 
-  if (loading) {
+  if (loading || error) {
     return null;
   }
-  const services = data?.getServices ?? [];
+
+  const users = data?.getUsers ?? [];
   return (
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
@@ -75,17 +76,23 @@ const ServicesScreen = ({navigation}) => {
 
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
-        data={services}
+        data={users}
         renderItem={renderItem}
         keyExtractor={_keyExtractor}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Services</Text>
+            <Text style={styles.header}>Users</Text>
           </View>
         )}
+      />
+      <UserManagementModal
+        user={user}
+        isModalVisible={modalVisible}
+        onCloseModal={onClose}
+        onComplete={onComplete}
       />
     </Screen>
   );
 };
 
-export default ServicesScreen;
+export default UserManagementScreen;

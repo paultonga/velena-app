@@ -98,7 +98,6 @@ class HorizontalSlider extends Component {
   render() {
     const {index} = this.state;
     return (
-      <Screen>
         <View>
           <FlatList
             data={data}
@@ -111,7 +110,6 @@ class HorizontalSlider extends Component {
             style={styles.flatlist}
           />
         </View>
-      </Screen>
     );
   }
 }

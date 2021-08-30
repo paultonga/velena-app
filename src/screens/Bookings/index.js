@@ -1,4 +1,4 @@
-import {gql} from '@apollo/client';
+import {gql, useQuery} from '@apollo/client';
 import React, {Component} from 'react';
 import {
   Text,
@@ -13,13 +13,13 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
-import {client, Client} from '../../../App';
+import {client} from '../../../App';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
+import { useFocusEffect } from '@react-navigation/native';
 
 export const GET_BOOKINGS_QUERY = gql`
   query GetBookingss {
@@ -40,38 +40,34 @@ export const GET_BOOKINGS_QUERY = gql`
   }
 `;
 
-class BookingssScreen extends Component {
-  state = {
-    bookings: [],
+const BookingssScreen = ({navigation}) => {
+  const {loading, error, data, refetch} = useQuery(GET_BOOKINGS_QUERY);
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [refetch]),
+  );
+
+  const onServicePressed = service => {
+    navigation.navigate('Service', {service, isBooking: true});
   };
 
-  componentDidMount() {
-    this.fetchBookings();
-  }
-
-  onServicePressed = service => {
-    this.props.navigation.navigate('Service', {service});
+  const onBookNow = () => {
+    navigation.navigate('Services');
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
+  const goBack = () => {
+    navigation.goBack();
   };
 
-  fetchBookings = async () => {
-    const {
-      data: {getBookings},
-    } = await client.query({
-      query: GET_BOOKINGS_QUERY,
-    });
-    this.setState({bookings: getBookings});
-  };
-
-  renderItem = ({item}) => {
+  const renderItem = ({item}) => {
     const {service} = item;
     return (
       <TouchableOpacity
         style={styles.itemContainer}
-        onPress={() => this.onServicePressed(service)}>
+        onPress={() => onServicePressed(service)}>
         <Image
           source={{uri: service.thumbnail}}
           style={[styles.itemThumbnail, styles.shadowStyle]}
@@ -80,28 +76,43 @@ class BookingssScreen extends Component {
           <Text style={styles.itemTitle}>{service.title}</Text>
           <Text style={styles.itemDescription}>{service.description}</Text>
           <View style={styles.timeContainer}>
-            <Icon name="time" size={wp(5)} color={Colors.buttonGrey}/>
-            <Text style={styles.time}>{moment(item.startDate).format('MMM Do YY')}</Text>
+            <Icon name="time" size={wp(5)} color={Colors.buttonGrey} />
+            <Text style={styles.time}>
+              {moment(item.startDate).format('MMM Do YY')}
+            </Text>
           </View>
         </View>
       </TouchableOpacity>
     );
   };
-  render() {
-    const {bookings} = this.state;
-    return (
-      <Screen>
-        <ScrollView contentContainerStyle={styles.scrollViewContent}>
+
+  if (loading) {
+    return null;
+  }
+  const bookings = data?.getBookings ?? [];
+  return (
+    <Screen>
+      <FlatList
+        contentContainerStyle={styles.scrollViewContent}
+        data={bookings}
+        renderItem={renderItem}
+        ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
             <Text style={styles.header}>Bookings</Text>
           </View>
-
-          <FlatList data={bookings} renderItem={this.renderItem} />
-        </ScrollView>
-      </Screen>
-    );
-  }
-}
+        )}
+        ListEmptyComponent={() => (
+          <View style={styles.emptyContainer}>
+            <Text style={styles.emptyText}>You've not booked yet!</Text>
+            <TouchableOpacity style={styles.bookNowButton} onPress={onBookNow}>
+              <Text style={styles.bookNowButtonText}>BOOK NOW</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      />
+    </Screen>
+  );
+};
 
 const styles = StyleSheet.create({
   scrollViewContent: {
@@ -168,6 +179,30 @@ const styles = StyleSheet.create({
   currency: {
     fontFamily: Fonts.regular,
     textTransform: 'uppercase',
+  },
+  emptyContainer: {
+    height: hp(70),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyText: {
+    fontFamily: Fonts.extraBold,
+    fontSize: wp(5),
+    marginBottom: hp(1),
+  },
+  bookNowButton: {
+    width: wp(30),
+    backgroundColor: Colors.buttonGrey,
+    height: hp(5),
+    borderRadius: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignSelf: 'center',
+  },
+  bookNowButtonText: {
+    fontFamily: Fonts.bold,
+    fontSize: wp(2.5),
+    color: Colors.white,
   },
 });
 

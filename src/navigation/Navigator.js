@@ -25,27 +25,11 @@ import Fonts from '../ui/Fonts';
 import Splash from '../screens/Splash';
 import ServiceScreen from '../screens/ServiceScreen';
 import ServicesScreen from '../screens/ServicesScreen';
-import {isAndroid, hasNotch} from '../utils/platform';
-
-const ExploreScreenStack = () => (
-  <Stack.Navigator>
-    <Stack.Screen
-      name="ExploreScreen"
-      component={SearchScreen}
-      options={{headerShown: false}}
-    />
-    <Stack.Screen
-      name="Services"
-      component={ServicesScreen}
-      options={{headerShown: false}}
-    />
-    <Stack.Screen
-      name="Service"
-      component={ServiceScreen}
-      options={{headerShown: false}}
-    />
-  </Stack.Navigator>
-);
+import {isAndroid} from '../utils/platform';
+import DashboardScreen from '../screens/Dashboard';
+import UserManagementScreen from '../screens/UserManagement';
+import BookingManagementScreen from '../screens/BookingManagement';
+import ServicesTabScreen from '../screens/ServicesTabScreen';
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -99,8 +83,8 @@ const MainTabNavigation = () => (
       },
       labelStyle: {
         fontFamily: Fonts.bold,
-        fontSize: wp(3.5),
-        lineHeight: wp(3.5),
+        fontSize: wp(3.2),
+        lineHeight: wp(3.2),
       },
       iconStyle: {
         margin: 0,
@@ -113,8 +97,19 @@ const MainTabNavigation = () => (
           <Icon size={size} color={color} name="search" />
         ),
       }}
-      component={ExploreScreenStack}
+      component={SearchScreen}
       name="Search"
+    />
+
+    <Tab.Screen
+      options={{
+        tabBarLabel: 'Services',
+        tabBarIcon: ({color, size, focused}) => (
+          <Icon size={size} color={color} name="heart" />
+        ),
+      }}
+      component={ServicesTabScreen}
+      name="ServicesTab"
     />
 
     <Tab.Screen
@@ -141,17 +136,6 @@ const MainTabNavigation = () => (
 
     <Tab.Screen
       options={{
-        tabBarLabel: 'Favorites',
-        tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="heart" />
-        ),
-      }}
-      component={FavoritesScreen}
-      name="Favorites"
-    />
-
-    <Tab.Screen
-      options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({color, size, focused}) => (
           <Icon size={size} color={color} name="user" />
@@ -173,6 +157,31 @@ export const AppNavigator = () => (
     <Stack.Screen
       name="Main"
       component={MainTabNavigation}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Services"
+      component={ServicesScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Service"
+      component={ServiceScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Dashboard"
+      component={DashboardScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="UserManagement"
+      component={UserManagementScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="BookingManagement"
+      component={BookingManagementScreen}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

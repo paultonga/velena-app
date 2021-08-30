@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StatusBar, View} from 'react-native';
+import {StatusBar, View, StyleSheet} from 'react-native';
 
 class Screen extends Component {
   render() {
@@ -11,7 +11,7 @@ class Screen extends Component {
       translucent,
     } = this.props;
     return (
-      <>
+      <View style={StyleSheet.absoluteFill}>
         {!hideStatusBar && (
           <StatusBar
             barStyle={statusBarStyle}
@@ -20,7 +20,7 @@ class Screen extends Component {
           />
         )}
         {children}
-      </>
+      </View>
     );
   }
 }

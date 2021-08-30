@@ -15,6 +15,14 @@ export const LOGIN_USER = gql`
           address
           gender
           phone
+          role
+          settings {
+            id
+            pushNotifications
+            emailNotifications
+            theme
+            currency
+          }
         }
       }
     }

@@ -1,18 +1,11 @@
 import React from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  Platform,
-} from 'react-native';
+import {View, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
 import Ripple from 'react-native-material-ripple';
 import Icon from 'react-native-vector-icons/AntDesign';
-
-import Images from '../../ui/Images';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
 
@@ -26,16 +19,16 @@ export default function NavHeader({
   return (
     <View style={[styles.container, hasBottomBorder && styles.bottomBorder]}>
       {hasBackIcon && (
-        <Ripple
+        <TouchableOpacity
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-          rippleContainerBorderRadius={wp(3)}
-          rippleCentered={true}
-          rippleOpacity={0.7}
-          rippleDuration={800}
+          // rippleContainerBorderRadius={wp(3)}
+          // rippleCentered={true}
+          // rippleOpacity={0.7}
+          // rippleDuration={100}
           style={styles.backButton}
           onPress={leftAction}>
           <Icon name="arrowleft" color={Colors.black} size={wp(6)} />
-        </Ripple>
+        </TouchableOpacity>
       )}
 
       {!!rightActionText && (
@@ -56,7 +49,7 @@ export default function NavHeader({
 const styles = StyleSheet.create({
   container: {
     backgroundColor: Colors.white,
-    height: Platform.OS === 'ios' ? hp(12) : hp(6.5),
+    height: Platform.OS === 'ios' ? hp(12) : hp(11),
     width: wp(100),
     flexDirection: 'row',
   },

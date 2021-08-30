@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
   },
   container: {
     paddingTop: hp(8),
-    height: hp(70),
+    height: hp(75),
     width: wp(90),
     backgroundColor: 'white',
     borderRadius: wp(4),

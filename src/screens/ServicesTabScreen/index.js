@@ -8,7 +8,7 @@ import {GET_SERVICES_QUERY} from './graphql';
 import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
 
-const ServicesScreen = ({navigation}) => {
+const ServicesTabScreen = ({navigation}) => {
   const {
     loading,
     error,
@@ -71,7 +71,6 @@ const ServicesScreen = ({navigation}) => {
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
       barBackgroundColor={'white'}>
-      <NavHeader hasBackIcon leftAction={goBack} />
 
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
@@ -88,4 +87,4 @@ const ServicesScreen = ({navigation}) => {
   );
 };
 
-export default ServicesScreen;
+export default ServicesTabScreen;

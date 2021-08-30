@@ -27,24 +27,29 @@ class ServiceScreen extends Component {
   };
 
   render() {
-    const {isModalVisible} = this.state
+    const {isModalVisible} = this.state;
     const {
-      params: {service},
+      params: {service, isBooking},
     } = this.props.route;
 
     return (
       <Screen>
         <View style={styles.imageHeaderContainer}>
-          <Image style={styles.imageHeader} source={{uri: service?.thumbnail}} />
+          <Image
+            style={styles.imageHeader}
+            source={{uri: service?.thumbnail}}
+          />
           <TouchableOpacity style={styles.backButton} onPress={this.goBack}>
-            <Icon name="arrowleft" color={Colors.white} size={wp(6)} />
+            <Icon name="arrowleft" color={Colors.buttonGrey} size={wp(6)} />
           </TouchableOpacity>
         </View>
         <View style={styles.mainContainer}>
           <View style={styles.titleRow}>
             <Text style={styles.title}>{service?.title}</Text>
             <View style={styles.priceContainer}>
-              <Text style={styles.price}>{service.hasDiscount ? service.discountPrice : service.price}</Text>
+              <Text style={styles.price}>
+                {service.hasDiscount ? service.discountPrice : service.price}
+              </Text>
               <Text style={styles.currency}>tl</Text>
             </View>
           </View>
@@ -56,14 +61,16 @@ class ServiceScreen extends Component {
           </View>
 
           <View style={styles.details}>
-            <Text style={styles.description}>
-              {service.description}
-            </Text>
+            <Text style={styles.description}>{service.description}</Text>
           </View>
         </View>
 
-        <TouchableOpacity style={styles.bookNowButton} onPress={this.toggleBookingModal}>
-          <Text style={styles.bookNowButtonText}>BOOK NOW</Text>
+        <TouchableOpacity
+          style={styles.bookNowButton}
+          onPress={isBooking ? () => {} : this.toggleBookingModal}>
+          <Text style={styles.bookNowButtonText}>
+            {isBooking ? 'CANCEL BOOKING' : 'BOOK NOW'}
+          </Text>
         </TouchableOpacity>
 
         <BookingModal
@@ -83,13 +90,14 @@ const styles = StyleSheet.create({
   },
   backButton: {
     position: 'absolute',
-    top: hp(8),
+    top: hp(7),
     left: wp(8),
-    height: wp(10),
-    width: wp(10),
+    height: wp(14),
+    width: wp(14),
+    backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',
-    borderRadius: wp(2),
+    borderRadius: wp(3),
   },
   mainContainer: {
     flex: 1,
