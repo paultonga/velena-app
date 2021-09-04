@@ -13,20 +13,17 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  HttpLink,
   ApolloLink,
   concat,
   createHttpLink,
 } from '@apollo/client';
 import {onError} from '@apollo/client/link/error';
-import {setContext} from '@apollo/client/link/context';
-import { Provider } from 'react-redux';
-//import { PersistGate } from 'redux-persist/integration/react';
-import { persistor, store } from './src/redux/store';
-import { PersistGate } from 'redux-persist/integration/react';
+import {Provider} from 'react-redux';
+import {persistor, store} from './src/redux/store';
+import {PersistGate} from 'redux-persist/integration/react';
+import messaging from '@react-native-firebase/messaging';
 
 const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
-const API_URL_LOCAL = 'https://7b8b4dad9cb2.ngrok.io/graphql';
 
 const httpLink = new createHttpLink({uri: API_URL});
 
@@ -57,15 +54,6 @@ const loggerLink = new ApolloLink((operation, forward) => {
   });
 });
 
-// const authLink = setContext(async (_, {headers}) => {
-//   return {
-//     headers: {
-//       ...headers,
-//       authorization: null,
-//     },
-//   };
-// });
-
 const authMiddleware = new ApolloLink(async (operation, forward) => {
   const token = store.getState().account.sessionToken;
   operation.setContext(({headers = {}}) => ({
@@ -86,6 +74,31 @@ export const client = new ApolloClient({
 export const navigationRef = React.createRef();
 
 class App extends React.Component {
+  componentDidMount() {
+    this.requestUserPermission();
+  }
+
+  requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      this.getFcmToken(); //<---- Add this
+      console.log('Authorization status:', authStatus);
+    }
+  };
+
+  getFcmToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      console.log(fcmToken);
+      console.log('Your Firebase Token is:', fcmToken);
+    } else {
+      console.log('Failed', 'No token received');
+    }
+  };
+
   render() {
     return (
       <ApolloProvider client={client}>
@@ -94,7 +107,7 @@ class App extends React.Component {
             <NavigationContainer ref={navigationRef}>
               <AppNavigator />
             </NavigationContainer>
-            </PersistGate>
+          </PersistGate>
         </Provider>
       </ApolloProvider>
     );
