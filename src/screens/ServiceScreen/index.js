@@ -40,7 +40,7 @@ class ServiceScreen extends Component {
             source={{uri: service?.thumbnail}}
           />
           <TouchableOpacity style={styles.backButton} onPress={this.goBack}>
-            <Icon name="arrowleft" color={Colors.buttonGrey} size={wp(6)} />
+            <Icon name="arrowleft" color={Colors.buttonGrey} size={wp(4.5)} />
           </TouchableOpacity>
         </View>
         <View style={styles.mainContainer}>
@@ -92,8 +92,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     top: hp(7),
     left: wp(8),
-    height: wp(14),
-    width: wp(14),
+    height: wp(11),
+    width: wp(11),
     backgroundColor: 'white',
     alignItems: 'center',
     justifyContent: 'center',

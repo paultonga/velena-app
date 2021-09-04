@@ -51,7 +51,6 @@ export default function Input({
 const styles = StyleSheet.create({
   container: {
     width: wp(80),
-    height: hp(6),
     marginVertical: hp(1),
   },
   input: {
@@ -60,9 +59,7 @@ const styles = StyleSheet.create({
     fontSize: wp(4),
     color: Colors.headerGreyText,
     ...Platform.select({
-      android: {
-        marginTop: hp(1),
-      },
+      android: {},
       ios: {
         marginTop: hp(2.2),
       },

@@ -9,12 +9,7 @@ import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
 
 const ServicesTabScreen = ({navigation}) => {
-  const {
-    loading,
-    error,
-    data,
-    refetch,
-  } = useQuery(GET_SERVICES_QUERY);
+  const {loading, error, data, refetch} = useQuery(GET_SERVICES_QUERY);
 
   useFocusEffect(
     React.useCallback(() => {
@@ -71,7 +66,6 @@ const ServicesTabScreen = ({navigation}) => {
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
       barBackgroundColor={'white'}>
-
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
         data={services}

@@ -133,7 +133,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     marginRight: wp(4),
-    height: hp(27.5),
+    height: hp(28.5),
     width: wp(38),
     borderRadius: 15,
   },
@@ -149,7 +149,7 @@ const styles = StyleSheet.create({
   },
   itemTitle: {
     fontFamily: Fonts.extraBold,
-    fontSize: wp(4),
+    fontSize: wp(3.8),
     marginBottom: hp(1),
     color: Colors.black,
   },
