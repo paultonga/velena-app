@@ -1,5 +1,6 @@
 import React from 'react';
 import {View, Text, StyleSheet, Platform, TouchableOpacity} from 'react-native';
+import {useSelector} from 'react-redux';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
@@ -15,16 +16,19 @@ export default function NavHeader({
   rightAction,
   leftAction,
   hasBottomBorder,
+  hasNotificationIcon,
 }) {
+  const n = useSelector(state => state.account.notifications);
+  const notifications = n ?? [];
+  const count = notifications.reduce(
+    (acc, cur) => (cur.isRead === false ? ++acc : acc),
+    0,
+  );
   return (
     <View style={[styles.container, hasBottomBorder && styles.bottomBorder]}>
       {hasBackIcon && (
         <TouchableOpacity
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
-          // rippleContainerBorderRadius={wp(3)}
-          // rippleCentered={true}
-          // rippleOpacity={0.7}
-          // rippleDuration={100}
           style={styles.backButton}
           onPress={leftAction}>
           <Icon name="arrowleft" color={Colors.black} size={wp(6)} />
@@ -42,6 +46,20 @@ export default function NavHeader({
           <Text style={styles.rightActionButtonText}>{rightActionText}</Text>
         </Ripple>
       )}
+
+      {hasNotificationIcon && (
+        <TouchableOpacity
+          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+          style={styles.notificationButton}
+          onPress={() => {}}>
+          {!!count && (
+            <View style={styles.badgeContainer}>
+              <Text style={styles.badge}>{count}</Text>
+            </View>
+          )}
+          <Icon name="bells" color={Colors.black} size={wp(6)} />
+        </TouchableOpacity>
+      )}
     </View>
   );
 }
@@ -52,6 +70,23 @@ const styles = StyleSheet.create({
     height: Platform.OS === 'ios' ? hp(12) : hp(11),
     width: wp(100),
     flexDirection: 'row',
+  },
+  badgeContainer: {
+    position: 'absolute',
+    right: wp(2),
+    top: wp(1),
+    zIndex: 10,
+    backgroundColor: 'red',
+    height: wp(4),
+    width: wp(4),
+    borderRadius: wp(5),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  badge: {
+    color: 'white',
+    fontFamily: Fonts.bold,
+    fontSize: wp(2.3),
   },
   bottomBorder: {
     elevation: 1,
@@ -77,6 +112,16 @@ const styles = StyleSheet.create({
   rightActionButton: {
     height: wp(10),
     width: wp(20),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(3),
+    position: 'absolute',
+    right: wp(5),
+    bottom: hp(1),
+  },
+  notificationButton: {
+    height: wp(10),
+    width: wp(12),
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: wp(3),

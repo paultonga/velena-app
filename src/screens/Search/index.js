@@ -17,36 +17,14 @@ import {
 } from 'react-native-responsive-screen';
 import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
-import Images from '../../ui/Images';
-import Color from 'color';
 import FavoritesList from '../../component/Favorites';
 import PopularItemsList from '../../component/PopularDemand';
 import HorizontalSlider from '../../component/HorizontalSlider';
-import {gql} from '@apollo/client';
 import {client} from '../../../App';
 import _ from 'lodash';
-
-const GET_EXPLORE_SCREEN_DATA = gql`
-  query GetExploreScreenData {
-    getExploreScreen {
-      popular {
-        id
-        title
-        description
-        thumbnail
-        hasDiscount
-        discountPrice
-        price
-      }
-      categories {
-        id
-        title
-        description
-        thumbnail
-      }
-    }
-  }
-`;
+import messaging from '@react-native-firebase/messaging';
+import {GET_EXPLORE_SCREEN_DATA, REGISTER_PUSH_TOKEN} from './graphql';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
 
 class SearchScreen extends Component {
   state = {
@@ -57,7 +35,41 @@ class SearchScreen extends Component {
 
   componentDidMount() {
     this.getScreenData();
+    this.requestUserPermission();
   }
+
+  requestUserPermission = async () => {
+    const authStatus = await messaging().requestPermission();
+    const permissionIOS = await PushNotificationIOS.requestPermissions();
+    console.log('IOS PERMISSION', permissionIOS);
+    const enabled =
+      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+    if (enabled) {
+      const pushToken = await this.getFcmToken();
+      this.updatePushToken(pushToken);
+    }
+  };
+
+  getFcmToken = async () => {
+    const fcmToken = await messaging().getToken();
+    if (fcmToken) {
+      return fcmToken.toString();
+    } else {
+      return null;
+    }
+  };
+
+  updatePushToken = async pushToken => {
+    try {
+      const response = await client.mutate({
+        mutation: REGISTER_PUSH_TOKEN,
+        variables: {pushToken},
+      });
+    } catch (error) {
+      console.error('[Error]: ', error);
+    }
+  };
 
   viewAllServices = () => {
     this.props.navigation.navigate('Services');

@@ -7,6 +7,7 @@ export const Types = {
   SIGNUP_SUCCESS: 'user/SIGNUP_SUCCESS',
   LOGOUT: 'user/LOGOUT',
   SET_INTRO_VIEWED: 'user/SET_INTRO_VIEWED',
+  NOTIFICATION_RECEIVED: 'user/NOTIFICATION_RECEIVED',
 };
 
 export const loginUser = payload => ({

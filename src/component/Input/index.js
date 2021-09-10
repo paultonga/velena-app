@@ -9,7 +9,7 @@ import Fonts from '../../ui/Fonts';
 
 export default function Input({
   placeholder,
-  isSecure,
+  isSecure = false,
   onTextChange,
   autoCapitalize,
   customContainerStyle,
@@ -31,7 +31,7 @@ export default function Input({
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={Colors.lightGreyText}
-        secureTextEntry={!!value && isSecure}
+        secureTextEntry={isSecure}
         onChangeText={handleTextChange}
         style={styles.input}
         autoCapitalize={autoCapitalize}
@@ -61,13 +61,17 @@ const styles = StyleSheet.create({
     ...Platform.select({
       android: {},
       ios: {
-        marginTop: hp(2.2),
+        marginTop: hp(1.2),
+        height: hp(3.5),
+        borderBottomColor: Colors.boldGreyText,
+        borderBottomWidth: 1,
+        marginBottom: hp(1),
       },
     }),
   },
   floatingLabel: {
     position: 'absolute',
-    fontFamily: Fonts.regular,
+    fontFamily: Fonts.bold,
     fontSize: wp(2.8),
     color: Colors.lightGreyText,
   },

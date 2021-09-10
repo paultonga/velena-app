@@ -21,7 +21,9 @@ import {onError} from '@apollo/client/link/error';
 import {Provider} from 'react-redux';
 import {persistor, store} from './src/redux/store';
 import {PersistGate} from 'redux-persist/integration/react';
-import messaging from '@react-native-firebase/messaging';
+import PushNotification from 'react-native-push-notification';
+import PushNotificationIOS from '@react-native-community/push-notification-ios';
+import {Types} from './src/redux/user/actions';
 
 const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
 
@@ -73,32 +75,33 @@ export const client = new ApolloClient({
 
 export const navigationRef = React.createRef();
 
+PushNotification.configure({
+  onNotification: function (notification) {
+    PushNotification.setApplicationIconBadgeNumber(1);
+    store.dispatch({
+      type: Types.NOTIFICATION_RECEIVED,
+      payload: {
+        isRead: false,
+        message: notification.message,
+        title: notification.title,
+      },
+    });
+    //notification.finish(PushNotificationIOS.FetchResult.NoData);
+  },
+
+  popInitialNotification: true,
+});
+
 class App extends React.Component {
   componentDidMount() {
-    this.requestUserPermission();
+    PushNotificationIOS.addEventListener('notification', (notification) => {
+      console.log('{NOTIF RECEIVED::', notification);
+    });
+
+    PushNotificationIOS.addEventListener('register', (notification) => {
+      console.log('{NOTIF REG::', notification);
+    });
   }
-
-  requestUserPermission = async () => {
-    const authStatus = await messaging().requestPermission();
-    const enabled =
-      authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
-      authStatus === messaging.AuthorizationStatus.PROVISIONAL;
-    if (enabled) {
-      this.getFcmToken(); //<---- Add this
-      console.log('Authorization status:', authStatus);
-    }
-  };
-
-  getFcmToken = async () => {
-    const fcmToken = await messaging().getToken();
-    if (fcmToken) {
-      console.log(fcmToken);
-      console.log('Your Firebase Token is:', fcmToken);
-    } else {
-      console.log('Failed', 'No token received');
-    }
-  };
-
   render() {
     return (
       <ApolloProvider client={client}>

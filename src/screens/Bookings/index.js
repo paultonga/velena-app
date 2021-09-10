@@ -20,6 +20,7 @@ import {client} from '../../../App';
 import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
+import NavHeader from '../../component/NavHeader';
 
 export const GET_BOOKINGS_QUERY = gql`
   query GetBookingss {
@@ -92,6 +93,7 @@ const BookingssScreen = ({navigation}) => {
   const bookings = data?.getBookings ?? [];
   return (
     <Screen>
+      <NavHeader hasNotificationIcon />
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
         data={bookings}
@@ -117,7 +119,6 @@ const BookingssScreen = ({navigation}) => {
 const styles = StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: wp(8),
-    paddingTop: hp(10),
   },
   pageHeader: {
     width: wp(100),

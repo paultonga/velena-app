@@ -6,6 +6,7 @@ const INITIAL = {
   loading: false,
   isLoggedIn: false,
   hasViewedIntro: false,
+  notifications: new Array(),
 };
 
 export default function UserReducer(state = INITIAL, action) {
@@ -71,6 +72,12 @@ export default function UserReducer(state = INITIAL, action) {
         ...state,
         hasViewedIntro: true,
         loading: false,
+      };
+    }
+    case Types.NOTIFICATION_RECEIVED: {
+      return {
+        ...state,
+        notifications: [...state.notifications, action.payload],
       };
     }
     default: {

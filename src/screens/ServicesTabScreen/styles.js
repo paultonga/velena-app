@@ -9,7 +9,6 @@ import Fonts from '../../ui/Fonts';
 export default StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: wp(8),
-    paddingTop: hp(10),
   },
   pageHeader: {
     width: wp(100),
