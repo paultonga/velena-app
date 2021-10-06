@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {Text, View, StyleSheet, Image, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {Text, View, Image, TouchableOpacity} from 'react-native';
 import Screen from '../../component/Screen';
 import {
   widthPercentageToDP as wp,
@@ -9,29 +9,65 @@ import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import BookingModal from '../../component/BookingModal';
+import styles from './styles';
+import {GET_SERVICE_QUERY, TOGGLE_FAVORITE_SERVICE} from './graphql';
+import {useMutation, useQuery} from '@apollo/client';
+import {useFocusEffect} from '@react-navigation/core';
+import _ from 'lodash';
+import {GET_EXPLORE_SCREEN_DATA} from '../Search/graphql';
 
-const DEMO_IMAGE =
-  'https://unsplash.com/photos/k47viB7Dt8I/download?force=true&w=640';
+const ServiceScreen = ({route, navigation}) => {
+  const [modalVisible, setModalVisible] = useState(false);
+  const [favorite, setFavorite] = useState(null);
+  const {
+    params: {
+      isBooking,
+      service: {id},
+    },
+  } = route;
 
-class ServiceScreen extends Component {
-  state = {
-    isModalVisible: false,
+  const {loading, error, data, refetch} = useQuery(GET_SERVICE_QUERY, {
+    variables: {id: id},
+  });
+
+  const [toggleFavoriteService, {}] = useMutation(TOGGLE_FAVORITE_SERVICE, {
+    onError: err => console.log('[ERROR]', err),
+  });
+
+  useFocusEffect(
+    React.useCallback(() => {
+      refetch();
+      return () => {};
+    }, [refetch]),
+  );
+
+  const goBack = () => {
+    navigation.goBack();
   };
 
-  goBack = () => {
-    this.props.navigation.goBack();
+  const toggleBookingModal = () => {
+    setModalVisible(!modalVisible);
   };
 
-  toggleBookingModal = () => {
-    this.setState({isModalVisible: !this.state.isModalVisible});
+  const toggleFavorite = () => {
+    toggleFavoriteService({
+      variables: {id: id, isFavorite: !favorite},
+      awaitRefetchQueries: true,
+      refetchQueries: () => {
+        return [
+          {query: GET_EXPLORE_SCREEN_DATA},
+          {query: GET_SERVICE_QUERY, variables: {id}},
+        ];
+      },
+    });
+    setFavorite(!favorite);
   };
 
-  render() {
-    const {isModalVisible} = this.state;
-    const {
-      params: {service, isBooking},
-    } = this.props.route;
-
+  if (loading || error || _.isNull(data)) {
+    return null;
+  } else {
+    const {service} = data;
+    favorite === null && setFavorite(service?.isFavorite);
     return (
       <Screen>
         <View style={styles.imageHeaderContainer}>
@@ -39,7 +75,7 @@ class ServiceScreen extends Component {
             style={styles.imageHeader}
             source={{uri: service?.thumbnail}}
           />
-          <TouchableOpacity style={styles.backButton} onPress={this.goBack}>
+          <TouchableOpacity style={styles.backButton} onPress={goBack}>
             <Icon name="arrowleft" color={Colors.buttonGrey} size={wp(4.5)} />
           </TouchableOpacity>
         </View>
@@ -55,8 +91,12 @@ class ServiceScreen extends Component {
           </View>
 
           <View style={styles.iconRow}>
-            <TouchableOpacity>
-              <Icon name="heart" size={wp(5)} color="red" />
+            <TouchableOpacity onPress={toggleFavorite}>
+              <Icon
+                name={favorite ? 'heart' : 'hearto'}
+                size={wp(5)}
+                color="red"
+              />
             </TouchableOpacity>
           </View>
 
@@ -67,91 +107,20 @@ class ServiceScreen extends Component {
 
         <TouchableOpacity
           style={styles.bookNowButton}
-          onPress={isBooking ? () => {} : this.toggleBookingModal}>
+          onPress={isBooking ? () => {} : toggleBookingModal}>
           <Text style={styles.bookNowButtonText}>
             {isBooking ? 'CANCEL BOOKING' : 'BOOK NOW'}
           </Text>
         </TouchableOpacity>
 
         <BookingModal
-          isModalVisible={isModalVisible}
-          onCloseModal={this.toggleBookingModal}
+          isModalVisible={modalVisible}
+          onCloseModal={toggleBookingModal}
           service={service}
         />
       </Screen>
     );
   }
-}
-
-const styles = StyleSheet.create({
-  imageHeader: {
-    width: wp(100),
-    height: hp(30),
-  },
-  backButton: {
-    position: 'absolute',
-    top: hp(7),
-    left: wp(8),
-    height: wp(11),
-    width: wp(11),
-    backgroundColor: 'white',
-    alignItems: 'center',
-    justifyContent: 'center',
-    borderRadius: wp(3),
-  },
-  mainContainer: {
-    flex: 1,
-    paddingHorizontal: wp(6),
-    paddingTop: hp(2),
-  },
-  titleRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-  },
-  title: {
-    fontFamily: Fonts.extraBold,
-    fontSize: wp(6),
-    width: wp(65),
-  },
-  priceContainer: {
-    flexDirection: 'row',
-    width: wp(20),
-  },
-  price: {
-    fontFamily: Fonts.light,
-    fontSize: wp(7),
-  },
-  currency: {
-    fontFamily: Fonts.regular,
-    textTransform: 'uppercase',
-  },
-  iconRow: {
-    flexDirection: 'row',
-    marginTop: hp(2),
-    marginBottom: hp(4),
-  },
-  details: {},
-  description: {
-    fontFamily: Fonts.regular,
-    fontSize: wp(4),
-    lineHeight: wp(6),
-  },
-  bookNowButton: {
-    backgroundColor: Colors.buttonGrey,
-    marginVertical: hp(5),
-    width: wp(80),
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    paddingVertical: hp(2),
-    borderRadius: wp(2),
-  },
-  bookNowButtonText: {
-    fontFamily: Fonts.bold,
-    color: Colors.white,
-    letterSpacing: 1,
-    fontSize: wp(3),
-  },
-});
+};
 
 export default ServiceScreen;

@@ -6,4 +6,5 @@ export default {
   boldGreyText: '#252529',
   headerGreyText: '#252529',
   transparent: 'transparent',
+  veryLightGrey: '#C8C8C8',
 };

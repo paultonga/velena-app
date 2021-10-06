@@ -11,7 +11,7 @@ import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,
 } from 'react-native-responsive-screen';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -30,6 +30,9 @@ import DashboardScreen from '../screens/Dashboard';
 import UserManagementScreen from '../screens/UserManagement';
 import BookingManagementScreen from '../screens/BookingManagement';
 import ServicesTabScreen from '../screens/ServicesTabScreen';
+import ServiceCategoryScreen from '../screens/ServiceCategoryScreen';
+import DealScreen from '../screens/DealScreen';
+import NotificationsScreen from '../screens/Notifications';
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -71,8 +74,9 @@ const MainTabNavigation = () => (
     initialRouteName="Search"
     tabBarOptions={{
       style: {
-        height: isAndroid ? hp(10) : hp(12),
-        paddingBottom: hp(1),
+        height: isAndroid ? hp(9) : hp(9.5),
+        backgroundColor: 'white',
+        marginBottom: hp(0.5),
       },
       keyboardHidesTabBar: true,
       activeTintColor: 'black',
@@ -80,21 +84,27 @@ const MainTabNavigation = () => (
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'center',
+        alignContent: 'center',
+        alignSelf: 'center',
       },
       labelStyle: {
-        fontFamily: Fonts.bold,
-        fontSize: wp(3.2),
-        lineHeight: wp(3.2),
+        fontFamily: Fonts.extraBold,
+        fontSize: wp(3.4),
+        lineHeight: wp(3.4),
       },
       iconStyle: {
-        margin: 0,
+        marginBottom: 0,
       },
     }}>
     <Tab.Screen
       options={{
         tabBarLabel: 'Explore',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="search" />
+          <Icon
+            size={size}
+            color={color}
+            name={focused ? 'ios-compass-sharp' : 'ios-compass-outline'}
+          />
         ),
       }}
       component={SearchScreen}
@@ -105,7 +115,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Services',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="heart" />
+          <Icon
+            size={size}
+            color={color}
+            name={focused ? 'heart-circle-sharp' : 'heart-circle-outline'}
+          />
         ),
       }}
       component={ServicesTabScreen}
@@ -116,7 +130,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Deals',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="tag" />
+          <Icon
+            size={size}
+            color={color}
+            name={focused ? 'pricetags-sharp' : 'pricetags-outline'}
+          />
         ),
       }}
       component={DealsScreen}
@@ -127,7 +145,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Bookings',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="star" />
+          <Icon
+            size={size}
+            color={color}
+            name={focused ? 'ios-star-sharp' : 'ios-star-outline'}
+          />
         ),
       }}
       component={BookingsScreen}
@@ -138,7 +160,11 @@ const MainTabNavigation = () => (
       options={{
         tabBarLabel: 'Profile',
         tabBarIcon: ({color, size, focused}) => (
-          <Icon size={size} color={color} name="user" />
+          <Icon
+            size={size}
+            color={color}
+            name={focused ? 'ios-person-sharp' : 'ios-person-outline'}
+          />
         ),
       }}
       component={ProfileScreen}
@@ -182,6 +208,21 @@ export const AppNavigator = () => (
     <Stack.Screen
       name="BookingManagement"
       component={BookingManagementScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="ServiceCategory"
+      component={ServiceCategoryScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="DealScreen"
+      component={DealScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Notifications"
+      component={NotificationsScreen}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

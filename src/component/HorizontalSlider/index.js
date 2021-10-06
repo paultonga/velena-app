@@ -20,25 +20,6 @@ import {setIntroViewed} from '../../redux/user/actions';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
 
-const data = [
-  {
-    header: 'Stylish hair',
-    description: 'Explore interesting and modern hairstyles from experts.',
-    image: 'https://unsplash.com/photos/KvvZ6IIB5FM/download?force=true&w=640',
-  },
-  {
-    header: 'Best deals',
-    description: 'Experience best hair deals in our different stores.',
-    image: 'https://unsplash.com/photos/FkAZqQJTbXM/download?force=true&w=640',
-  },
-  {
-    header: 'Fast booking',
-    description:
-      'With our new and efficient app, you can make fast bookings online.',
-    image: 'https://unsplash.com/photos/FkAZqQJTbXM/download?force=true&w=640',
-  },
-];
-
 const Indicator = ({active = false}) => {
   return (
     <View
@@ -65,10 +46,11 @@ class HorizontalSlider extends Component {
   };
 
   renderItem = ({item, index}) => {
+    const {data} = this.props;
     return (
       <View style={styles.itemContainer}>
         <Image
-          source={{uri: item.image}}
+          source={{uri: item.thumbnail}}
           style={styles.image}
           resizeMode="cover"
         />
@@ -78,15 +60,22 @@ class HorizontalSlider extends Component {
           colors={['rgba(0,0,0,0.00)', 'rgba(0,0,0,0.80)']}>
           <View style={styles.bottomContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.header}>{item.header}</Text>
-              <Text style={styles.description}>{item.description}</Text>
+              <Text style={styles.header}>{item.title}</Text>
+              <Text
+                numberOfLines={2}
+                ellipsizeMode="tail"
+                style={styles.description}>
+                {item.description}
+              </Text>
               <View style={styles.indicatorContainer}>
                 {data.map((_, itemIndex) => (
                   <Indicator active={index === itemIndex} />
                 ))}
               </View>
             </View>
-            <TouchableOpacity style={styles.bookNowButton}>
+            <TouchableOpacity
+              style={styles.bookNowButton}
+              onPress={() => this.props.onCategoryPressed(item)}>
               <Text style={styles.bookNowButtonText}>BOOK NOW</Text>
             </TouchableOpacity>
           </View>
@@ -97,19 +86,20 @@ class HorizontalSlider extends Component {
 
   render() {
     const {index} = this.state;
+    const {data} = this.props;
     return (
-        <View>
-          <FlatList
-            data={data}
-            onViewableItemsChanged={this._onViewableItemsChanged}
-            viewabilityConfig={this._viewabilityConfig}
-            renderItem={this.renderItem}
-            horizontal
-            pagingEnabled={true}
-            showsHorizontalScrollIndicator={false}
-            style={styles.flatlist}
-          />
-        </View>
+      <View>
+        <FlatList
+          data={data}
+          onViewableItemsChanged={this._onViewableItemsChanged}
+          viewabilityConfig={this._viewabilityConfig}
+          renderItem={this.renderItem}
+          horizontal
+          pagingEnabled={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.flatlist}
+        />
+      </View>
     );
   }
 }
@@ -159,7 +149,8 @@ const styles = StyleSheet.create({
   },
   header: {
     fontFamily: Fonts.header,
-    fontSize: wp(9),
+    fontSize: wp(8),
+    lineHeight: wp(8),
     color: Colors.white,
   },
   description: {

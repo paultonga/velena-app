@@ -14,36 +14,11 @@ import {
 
 import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
-import Ripple from 'react-native-material-ripple';
+import ContentWrapper from '../ContentWrapper';
+import { hasNotch } from '../../utils/platform';
 
-const FavoritesData = [
-  {
-    title: 'Pedicure and Manicure',
-    description: 'A healthy treatment for nails.',
-    thumbnail:
-      'https://unsplash.com/photos/k47viB7Dt8I/download?force=true&w=640',
-  },
-  {
-    title: 'Laser Hair',
-    description: 'Remove unwanted hair using laser',
-    thumbnail:
-      'https://unsplash.com/photos/Hp-3N5Gl1Ak/download?force=true&w=640',
-  },
-  {
-    title: 'Hair Wash',
-    description: 'Treat your hair to deep wash.',
-    thumbnail:
-      'https://unsplash.com/photos/9RBu0WPfN7w/download?force=true&w=640',
-  },
-  {
-    title: 'Feet Wash',
-    description: 'Remove scales and dry feet.',
-    thumbnail:
-      'https://unsplash.com/photos/qeuJczNo54w/download?force=true&w=640',
-  },
-];
 
-const FavoriteItem = ({item, onPress}) => {
+const PopularItem = ({item, onPress}) => {
   return (
     <TouchableOpacity
       style={[styles.itemContainer, styles.shadowStyle]}
@@ -64,35 +39,33 @@ const FavoriteItem = ({item, onPress}) => {
   );
 };
 
-export default function FavoritesList({
+export default function PopularServices({
   data,
   onViewAllPressed,
   onServicePressed,
 }) {
+  const _keyExtractor = (item, index) => `itemExtractor-${index}-${item?.id}`;
+
   const handledItemPressed = service => {
     onServicePressed(service);
   };
   return (
-    <View style={styles.favoritesContainer}>
-      <Text style={styles.header}>Popular</Text>
-      <View style={styles.subheaderContainer}>
-        <Text style={styles.subheader}>Our most viewed services</Text>
-        <TouchableOpacity
-          style={styles.viewAllButton}
-          onPress={onViewAllPressed}>
-          <Text style={styles.viewAllText}>View all</Text>
-        </TouchableOpacity>
-      </View>
+    <ContentWrapper
+      title={'Popular'}
+      subTitle={'Our most viewed services'}
+      rightButtonText={'View all'}
+      rightButtonPressed={onViewAllPressed}>
       <FlatList
         data={data}
+        keyExtractor={_keyExtractor}
         renderItem={({item}) => (
-          <FavoriteItem item={item} onPress={() => handledItemPressed(item)} />
+          <PopularItem item={item} onPress={() => handledItemPressed(item)} />
         )}
         horizontal
         showsHorizontalScrollIndicator={false}
         contentContainerStyle={styles.flatListContent}
       />
-    </View>
+    </ContentWrapper>
   );
 }
 
@@ -133,7 +106,7 @@ const styles = StyleSheet.create({
   },
   itemContainer: {
     marginRight: wp(4),
-    height: hp(28.5),
+    height: hasNotch ? hp(27.5) : hp(28.5),
     width: wp(38),
     borderRadius: 15,
   },
@@ -154,8 +127,8 @@ const styles = StyleSheet.create({
     color: Colors.black,
   },
   itemDescription: {
-    fontFamily: Fonts.regular,
+    fontFamily: Fonts.bold,
     fontSize: wp(3),
-    color: Colors.lightGreyText,
+    color: Colors.boldGreyText,
   },
 });

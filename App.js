@@ -25,7 +25,8 @@ import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {Types} from './src/redux/user/actions';
 
-const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
+//const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
+const API_URL = 'http://212.175.35.110:3000/graphql';
 
 const httpLink = new createHttpLink({uri: API_URL});
 
@@ -86,7 +87,7 @@ PushNotification.configure({
         title: notification.title,
       },
     });
-    //notification.finish(PushNotificationIOS.FetchResult.NoData);
+    notification.finish(PushNotificationIOS.FetchResult.NoData);
   },
 
   popInitialNotification: true,
@@ -94,12 +95,12 @@ PushNotification.configure({
 
 class App extends React.Component {
   componentDidMount() {
-    PushNotificationIOS.addEventListener('notification', (notification) => {
-      console.log('{NOTIF RECEIVED::', notification);
+    PushNotificationIOS.addEventListener('notification', notification => {
+      //console.log('{NOTIF RECEIVED::', notification);
     });
 
-    PushNotificationIOS.addEventListener('register', (notification) => {
-      console.log('{NOTIF REG::', notification);
+    PushNotificationIOS.addEventListener('register', notification => {
+      //console.log('{NOTIF REG::', notification);
     });
   }
   render() {

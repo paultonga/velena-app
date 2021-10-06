@@ -3,6 +3,13 @@ import {gql} from '@apollo/client';
 export const GET_EXPLORE_SCREEN_DATA = gql`
   query GetExploreScreenData {
     getExploreScreen {
+      deal {
+        id
+        title
+        description
+        thumbnail
+        percentage
+      }
       popular {
         id
         title
@@ -13,6 +20,12 @@ export const GET_EXPLORE_SCREEN_DATA = gql`
         price
       }
       categories {
+        id
+        title
+        description
+        thumbnail
+      }
+      favorites {
         id
         title
         description

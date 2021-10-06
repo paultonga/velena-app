@@ -66,7 +66,7 @@ const ServicesTabScreen = ({navigation}) => {
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
       barBackgroundColor={'white'}>
-      <NavHeader hasNotificationIcon />
+      <NavHeader hasNotificationIcon navigation={navigation}/>
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
         data={services}

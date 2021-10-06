@@ -1,33 +1,20 @@
-import {gql, useQuery} from '@apollo/client';
 import React from 'react';
 import {Text, View, FlatList, Image, TouchableOpacity} from 'react-native';
 import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import {STATUS_BAR_STYLES} from '../../utils/constants';
-import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
-import {GET_DEALS_QUERY} from './graphql';
+import {useSelector} from 'react-redux';
 
-const DealsScreen = ({navigation}) => {
-  const {loading, error, data, refetch} = useQuery(GET_DEALS_QUERY);
+const NotificationsScreen = ({navigation}) => {
+  const notifications = useSelector(state => state.account.notifications);
 
-  useFocusEffect(
-    React.useCallback(() => {
-      refetch();
-      return () => {};
-    }, [refetch]),
-  );
-
-  const onDealPressed = deal => {
-    navigation.navigate('DealScreen', {deal});
-  };
 
   const renderItem = ({item}) => {
     return (
       <TouchableOpacity
         style={[styles.itemContainer, styles.shadowStyle]}
-        onPress={() => onDealPressed(item)}>
-        <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
+        onPress={() => {}}>
         <View style={styles.detailsContainer}>
           <View style={styles.itemTextContainer}>
             <Text
@@ -40,12 +27,8 @@ const DealsScreen = ({navigation}) => {
               numberOfLines={2}
               ellipsizeMode="tail"
               style={styles.itemDescription}>
-              {item.description}
+              {item.message}
             </Text>
-          </View>
-          <View style={styles.percentageContainer}>
-            <Text style={styles.percentage}>{item?.percentage}</Text>
-            <Text style={styles.percentageSymbol}>%</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -54,23 +37,21 @@ const DealsScreen = ({navigation}) => {
 
   const _keyExtractor = (item, index) => `keyExtractor-${index}-${item.id}`;
 
-  if (loading) {
-    return null;
-  }
-  const deals = data?.getDeals ?? [];
+  const goBack = () => navigation.goBack();
+
   return (
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
       barBackgroundColor={'white'}>
-      <NavHeader hasNotificationIcon navigation={navigation} />
+      <NavHeader hasBackIcon leftAction={goBack}/>
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
-        data={deals}
+        data={notifications}
         renderItem={renderItem}
         keyExtractor={_keyExtractor}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Deals</Text>
+            <Text style={styles.header}>Notifications</Text>
           </View>
         )}
       />
@@ -78,4 +59,4 @@ const DealsScreen = ({navigation}) => {
   );
 };
 
-export default DealsScreen;
+export default NotificationsScreen;

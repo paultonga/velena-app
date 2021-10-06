@@ -17,6 +17,7 @@ export default function NavHeader({
   leftAction,
   hasBottomBorder,
   hasNotificationIcon,
+  navigation,
 }) {
   const n = useSelector(state => state.account.notifications);
   const notifications = n ?? [];
@@ -51,7 +52,7 @@ export default function NavHeader({
         <TouchableOpacity
           hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
           style={styles.notificationButton}
-          onPress={() => {}}>
+          onPress={() => navigation.navigate('Notifications')}>
           {!!count && (
             <View style={styles.badgeContainer}>
               <Text style={styles.badge}>{count}</Text>

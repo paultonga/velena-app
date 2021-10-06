@@ -13,16 +13,8 @@ export const LOGIN_USER = gql`
           lastName
           avatar
           address
-          gender
           phone
           role
-          settings {
-            id
-            pushNotifications
-            emailNotifications
-            theme
-            currency
-          }
         }
       }
     }
@@ -54,7 +46,6 @@ export const REGISTER_USER = gql`
           lastName
           avatar
           address
-          gender
           phone
         }
       }

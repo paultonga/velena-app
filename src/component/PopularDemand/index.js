@@ -39,11 +39,13 @@ const PopularItem = ({item}) => {
 };
 
 export default function PopularItemsList({ data }) {
+  const _keyExtractor = (item, index) => `favorites-${item.id}-${index}`;
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Service Categories</Text>
+      <Text style={styles.header}>Favorites</Text>
       <FlatList
         data={data}
+        keyExtractor={_keyExtractor}
         showsHorizontalScrollIndicator={false}
         renderItem={({item}) => <PopularItem item={item} />}
         horizontal
@@ -99,8 +101,8 @@ const styles = StyleSheet.create({
     marginLeft: wp(4.5),
     marginRight: wp(3),
     bottom: hp(2),
-    fontFamily: Fonts.header,
-    fontSize: wp(6),
+    fontFamily: Fonts.extraBold,
+    fontSize: wp(5),
     lineHeight: wp(5.8),
     color: Colors.white,
   },

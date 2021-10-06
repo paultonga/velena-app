@@ -93,7 +93,7 @@ const BookingssScreen = ({navigation}) => {
   const bookings = data?.getBookings ?? [];
   return (
     <Screen>
-      <NavHeader hasNotificationIcon />
+      <NavHeader hasNotificationIcon navigation={navigation} />
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
         data={bookings}

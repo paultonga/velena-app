@@ -33,7 +33,7 @@ export default StyleSheet.create({
   },
   itemContainer: {
     marginRight: wp(4),
-    height: hp(27),
+    paddingVertical: hp(2),
     width: wp(85),
     borderRadius: 15,
     marginBottom: hp(2),
