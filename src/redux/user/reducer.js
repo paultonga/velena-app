@@ -34,6 +34,27 @@ export default function UserReducer(state = INITIAL, action) {
         isLoggedIn: true,
       };
     }
+    case Types.UPDATE: {
+      return {
+        ...state,
+        loading: true,
+      };
+    }
+    case Types.UPDATE_ERROR: {
+      return {
+        ...state,
+        error: action.payload.error,
+        loading: false,
+      };
+    }
+    case Types.UPDATE_SUCCESS: {
+      return {
+        ...state,
+        error: null,
+        loading: false,
+        user: action.payload.user,
+      };
+    }
     case Types.SIGNUP: {
       return {
         ...state,
@@ -78,6 +99,12 @@ export default function UserReducer(state = INITIAL, action) {
       return {
         ...state,
         notifications: [...state.notifications, action.payload],
+      };
+    }
+    case Types.RESET: {
+      return {
+        ...state,
+        loading: false,
       };
     }
     default: {

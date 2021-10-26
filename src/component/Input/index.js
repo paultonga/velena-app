@@ -27,7 +27,7 @@ export default function Input({
   };
   return (
     <View style={[styles.container, customContainerStyle]}>
-      {visible && <Text style={styles.floatingLabel}>{placeholder}</Text>}
+      {(visible || !!value) && (<Text style={styles.floatingLabel}>{placeholder}</Text>)}
       <TextInput
         placeholder={placeholder}
         placeholderTextColor={Colors.lightGreyText}

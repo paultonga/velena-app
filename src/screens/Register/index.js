@@ -93,6 +93,7 @@ class RegisterScreen extends Component {
           leftAction={this.goBack}
           rightActionText="Log in"
           rightAction={this.gotoLogin}
+          hideScan
         />
         <View style={styles.container}>
           <Text style={styles.header}>Sign up</Text>

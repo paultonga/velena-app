@@ -37,8 +37,8 @@ export default StyleSheet.create({
     justifyContent: 'flex-start',
   },
   avatar: {
-    height: wp(16),
-    width: wp(16),
+    height: wp(19),
+    width: wp(19),
     borderRadius: wp(15),
   },
   linksContainer: {

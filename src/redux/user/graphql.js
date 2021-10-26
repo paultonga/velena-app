@@ -15,6 +15,10 @@ export const LOGIN_USER = gql`
           address
           phone
           role
+          settings {
+            pushNotifications
+            emailNotifications
+          }
         }
       }
     }
@@ -47,6 +51,47 @@ export const REGISTER_USER = gql`
           avatar
           address
           phone
+          role
+          settings {
+            pushNotifications
+            emailNotifications
+          }
+        }
+      }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser(
+    $firstName: String
+    $lastName: String
+    $address: String
+    $avatar: String
+  ) {
+    updateUser(
+      input: {
+        firstName: $firstName
+        lastName: $lastName
+        address: $address
+        avatar: $avatar
+      }
+    ) {
+      success
+      message
+      result {
+        user {
+          id
+          firstName
+          lastName
+          avatar
+          address
+          phone
+          role
+          settings {
+            pushNotifications
+            emailNotifications
+          }
         }
       }
     }

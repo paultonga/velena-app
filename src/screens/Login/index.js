@@ -86,7 +86,7 @@ class LoginScreen extends Component {
       <Screen
         statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
         barBackgroundColor={'white'}>
-        <NavHeader hasBackIcon leftAction={this.goBack} />
+        <NavHeader hasBackIcon leftAction={this.goBack} hideScan />
         <View style={styles.container}>
           <Text style={styles.header}>Log in</Text>
           <View style={styles.formContainer}>

@@ -59,14 +59,18 @@ const DashboardScreen = ({navigation, route}) => {
             </View>
             <View style={styles.menuRow}>
               <TouchableOpacity
-                onPress={handleMenuPress}
+                onPress={() => {
+                  navigation.navigate('DealsManagement');
+                }}
                 style={styles.menuItem}>
                 <Icon name="tags" size={wp(18)} />
                 <Text style={styles.menuText}>Deals Management</Text>
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={handleMenuPress}
+                onPress={() => {
+                  navigation.navigate('Accounting');
+                }}
                 style={styles.menuItem}>
                 <Icon name="book" size={wp(18)} />
                 <Text style={styles.menuText}>Accounting</Text>

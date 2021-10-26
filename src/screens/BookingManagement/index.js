@@ -118,7 +118,6 @@ const BookingManagementScreen = ({navigation, route}) => {
   const bookings = data?.bookings ?? [];
   const staff = data?.staff ?? [];
 
-  console.log(data);
 
   return (
     <Screen

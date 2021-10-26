@@ -9,18 +9,33 @@ import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
 import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
-import {GET_DEAL_QUERY} from './graphql';
-import {useQuery} from '@apollo/client';
+import {
+  ADD_SERVICE_TO_DEAL,
+  GET_DEAL_QUERY,
+  UPDATE_TODAYS_DEAL,
+} from './graphql';
+import {useMutation, useQuery} from '@apollo/client';
 import {useFocusEffect} from '@react-navigation/core';
 import _ from 'lodash';
+import {GET_EXPLORE_SCREEN_DATA} from '../Search/graphql';
+import ServiceListModal from '../../component/ServiceListModal';
 
 const DealScreen = ({route, navigation}) => {
+  const [modalVisible, setModalVisible] = React.useState(false);
   const {
-    params: {deal},
+    params: {deal, isAdmin},
   } = route;
 
   const {loading, error, data, refetch} = useQuery(GET_DEAL_QUERY, {
     variables: {id: deal.id},
+  });
+
+  const [updateTodaysDeal, {}] = useMutation(UPDATE_TODAYS_DEAL, {
+    onError: err => console.log('[ERROR]', err),
+  });
+
+  const [addServiceToDeal, {}] = useMutation(ADD_SERVICE_TO_DEAL, {
+    onError: err => console.log('[ERROR]', err),
   });
 
   useFocusEffect(
@@ -30,8 +45,18 @@ const DealScreen = ({route, navigation}) => {
     }, [refetch]),
   );
 
+  const setAsTodaysDeal = () => {
+    updateTodaysDeal({
+      variables: {id: deal.id},
+      awaitRefetchQueries: true,
+      refetchQueries: () => {
+        return [{query: GET_EXPLORE_SCREEN_DATA}];
+      },
+    });
+  };
+
   const onServicePressed = service => {
-    navigation.navigate('Service', {service});
+    !isAdmin && navigation.navigate('Service', {service});
   };
 
   const goBack = () => {
@@ -68,6 +93,19 @@ const DealScreen = ({route, navigation}) => {
     );
   };
 
+  const handleCloseModal = ({item = null}) => {
+    if (item) {
+      addServiceToDeal({
+        variables: {serviceId: item.id, dealId: deal.id},
+        awaitRefetchQueries: true,
+        refetchQueries: () => {
+          return [{query: GET_DEAL_QUERY, variables: {id: deal.id}}];
+        },
+      });
+    }
+    setModalVisible(false);
+  };
+
   const _keyExtractor = (item, index) => `servicesItem-${index}-${item.id}`;
 
   if (loading || error || _.isNull(data)) {
@@ -99,13 +137,37 @@ const DealScreen = ({route, navigation}) => {
               <View style={styles.details}>
                 <Text style={styles.description}>{deal?.description}</Text>
               </View>
+              {isAdmin && (
+                <View style={styles.adminRow}>
+                  <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={() => setModalVisible(true)}>
+                    <Text style={styles.addButtonText}>Add Service</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.addButton}
+                    onPress={setAsTodaysDeal}>
+                    <Text style={styles.addButtonText}>Set Today's Deal</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           )}
           ListEmptyComponent={() => (
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyText}>No Services Yet</Text>
+              {isAdmin && (
+                <TouchableOpacity style={styles.addButton}>
+                  <Text style={styles.addButtonText}>Add Service</Text>
+                </TouchableOpacity>
+              )}
             </View>
           )}
+        />
+
+        <ServiceListModal
+          isModalVisible={modalVisible}
+          onCloseModal={handleCloseModal}
         />
       </Screen>
     );

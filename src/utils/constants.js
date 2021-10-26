@@ -26,11 +26,11 @@ export const PROFILE_LINKS_MAP = {
 
 export const PROFILE_LINKS = [
   'Edit Profile',
-  'Change Password',
+  //'Change Password',
   'Credits & Coupons',
   'Invite Friends',
-  'Help & Support',
-  'Payments',
+ // 'Help & Support',
+ // 'Payments',
   'Settings',
 ];
 

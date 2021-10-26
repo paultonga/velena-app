@@ -9,12 +9,8 @@ export const GET_ME_QUERY = gql`
       phone
       address
       avatar
-      gender
       role
-      settings {
-        id
-        theme
-        currency
+      settings {\
         emailNotifications
         pushNotifications
       }

@@ -44,8 +44,8 @@ class SearchScreen extends Component {
 
   requestUserPermission = async () => {
     const authStatus = await messaging().requestPermission();
-    const permissionIOS = await PushNotificationIOS.requestPermissions();
-    console.log('IOS PERMISSION', permissionIOS);
+    //const permissionIOS = await PushNotificationIOS.requestPermissions();
+
     const enabled =
       authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
       authStatus === messaging.AuthorizationStatus.PROVISIONAL;

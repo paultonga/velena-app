@@ -10,7 +10,6 @@ import {
   ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
-import CalendarPicker from 'react-native-calendar-picker';
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,

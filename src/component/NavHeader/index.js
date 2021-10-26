@@ -17,6 +17,7 @@ export default function NavHeader({
   leftAction,
   hasBottomBorder,
   hasNotificationIcon,
+  hideScan,
   navigation,
 }) {
   const n = useSelector(state => state.account.notifications);
@@ -50,7 +51,7 @@ export default function NavHeader({
 
       {hasNotificationIcon && (
         <TouchableOpacity
-          hitSlop={{top: 20, bottom: 20, left: 20, right: 20}}
+          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
           style={styles.notificationButton}
           onPress={() => navigation.navigate('Notifications')}>
           {!!count && (
@@ -59,6 +60,18 @@ export default function NavHeader({
             </View>
           )}
           <Icon name="bells" color={Colors.black} size={wp(6)} />
+        </TouchableOpacity>
+      )}
+
+      {!hideScan && (
+        <TouchableOpacity
+          hitSlop={{top: 10, bottom: 10, left: 10, right: 10}}
+          style={[
+            styles.scanButton,
+            {right: hasNotificationIcon ? wp(20) : wp(5)},
+          ]}
+          onPress={() => {}}>
+          <Icon name="scan1" color={Colors.black} size={wp(6)} />
         </TouchableOpacity>
       )}
     </View>
@@ -128,6 +141,15 @@ const styles = StyleSheet.create({
     borderRadius: wp(3),
     position: 'absolute',
     right: wp(5),
+    bottom: hp(1),
+  },
+  scanButton: {
+    height: wp(10),
+    width: wp(12),
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: wp(3),
+    position: 'absolute',
     bottom: hp(1),
   },
   rightActionButtonText: {

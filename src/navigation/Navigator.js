@@ -33,6 +33,10 @@ import ServicesTabScreen from '../screens/ServicesTabScreen';
 import ServiceCategoryScreen from '../screens/ServiceCategoryScreen';
 import DealScreen from '../screens/DealScreen';
 import NotificationsScreen from '../screens/Notifications';
+import CreditsScreen from '../screens/CreditsScreen';
+import SettingsScreen from '../screens/SettingsScreen';
+import DealsManagement from '../screens/DealsManagement';
+import AccountingScreen from '../screens/Accounting';
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -223,6 +227,26 @@ export const AppNavigator = () => (
     <Stack.Screen
       name="Notifications"
       component={NotificationsScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Credits"
+      component={CreditsScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Settings"
+      component={SettingsScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="DealsManagement"
+      component={DealsManagement}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Accounting"
+      component={AccountingScreen}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

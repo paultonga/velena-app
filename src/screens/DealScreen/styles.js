@@ -126,4 +126,15 @@ export default StyleSheet.create({
     fontFamily: Fonts.bold,
     fontSize: wp(6),
   },
+  addButton: {
+    marginBottom: hp(3),
+  },
+  addButtonText: {
+    fontFamily: Fonts.bold,
+    fontSize: wp(4.5),
+  },
+  adminRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  }
 });

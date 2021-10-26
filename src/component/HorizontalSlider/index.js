@@ -69,7 +69,10 @@ class HorizontalSlider extends Component {
               </Text>
               <View style={styles.indicatorContainer}>
                 {data.map((_, itemIndex) => (
-                  <Indicator active={index === itemIndex} />
+                  <Indicator
+                    key={`indicatorKey${itemIndex}`}
+                    active={index === itemIndex}
+                  />
                 ))}
               </View>
             </View>
