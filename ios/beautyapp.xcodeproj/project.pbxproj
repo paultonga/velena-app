@@ -18,6 +18,7 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		97D02B24857149BAACEF10C2 /* Qartella-ExtraBold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 86BB366A419247299203768B /* Qartella-ExtraBold.ttf */; };
 		C6D25939C10F48B1AB11315A /* Qartella-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 39F5AB1FEA85463A88B69887 /* Qartella-Regular.ttf */; };
+		DA068AD02734081200B78836 /* _empty.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA068ACF2734081200B78836 /* _empty.swift */; };
 		DA41D93C26E23E4600E6BBFF /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = DA41D93B26E23E4600E6BBFF /* GoogleService-Info.plist */; };
 		F83EBF97D5B144FB8EBC0031 /* Qartella-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 53FA70895CB8405E88D0EA43 /* Qartella-Bold.ttf */; };
 		FA943C492542D3A818923D1E /* libPods-beautyapp-beautyappTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = FE598EA0EB336FE86CC5DB0A /* libPods-beautyapp-beautyappTests.a */; };
@@ -71,6 +72,7 @@
 		BA0C3ED1A4BD6CE476DE69FE /* Pods-beautyapp.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-beautyapp.release.xcconfig"; path = "Target Support Files/Pods-beautyapp/Pods-beautyapp.release.xcconfig"; sourceTree = "<group>"; };
 		D4C7DBBB42BB419A85721765 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		D518794B25A8BD8036B1BCC8 /* Pods-beautyapp-beautyappTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-beautyapp-beautyappTests.release.xcconfig"; path = "Target Support Files/Pods-beautyapp-beautyappTests/Pods-beautyapp-beautyappTests.release.xcconfig"; sourceTree = "<group>"; };
+		DA068ACF2734081200B78836 /* _empty.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = _empty.swift; sourceTree = "<group>"; };
 		DA41D93B26E23E4600E6BBFF /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		DAC8BF5326E61323002B550F /* beautyapp.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = beautyapp.entitlements; path = beautyapp/beautyapp.entitlements; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
@@ -124,6 +126,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				DA068ACF2734081200B78836 /* _empty.swift */,
 			);
 			name = beautyapp;
 			sourceTree = "<group>";
@@ -271,7 +274,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
-						LastSwiftMigration = 1120;
+						LastSwiftMigration = 1310;
 					};
 				};
 			};
@@ -495,6 +498,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				13B07FBC1A68108700A75B9A /* AppDelegate.m in Sources */,
+				DA068AD02734081200B78836 /* _empty.swift in Sources */,
 				13B07FC11A68108700A75B9A /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -570,7 +574,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = beautyapp/beautyapp.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 9R4SNMQFJP;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = beautyapp/Info.plist;
@@ -598,7 +602,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = beautyapp/beautyapp.entitlements;
-				CURRENT_PROJECT_VERSION = 4;
+				CURRENT_PROJECT_VERSION = 5;
 				DEVELOPMENT_TEAM = 9R4SNMQFJP;
 				INFOPLIST_FILE = beautyapp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (

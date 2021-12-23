@@ -15,6 +15,7 @@ import {useMutation, useQuery} from '@apollo/client';
 import {useFocusEffect} from '@react-navigation/core';
 import _ from 'lodash';
 import {GET_EXPLORE_SCREEN_DATA} from '../Search/graphql';
+import strings from '../../localization';
 
 const ServiceScreen = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -68,6 +69,8 @@ const ServiceScreen = ({route, navigation}) => {
   } else {
     const {service} = data;
     favorite === null && setFavorite(service?.isFavorite);
+
+    const loc = strings.getLanguage() || 'en';
     return (
       <Screen>
         <View style={styles.imageHeaderContainer}>
@@ -81,7 +84,7 @@ const ServiceScreen = ({route, navigation}) => {
         </View>
         <View style={styles.mainContainer}>
           <View style={styles.titleRow}>
-            <Text style={styles.title}>{service?.title}</Text>
+            <Text style={styles.title}>{service?.title[loc]}</Text>
             <View style={styles.priceContainer}>
               <Text style={styles.price}>
                 {service.hasDiscount ? service.discountPrice : service.price}
@@ -101,7 +104,7 @@ const ServiceScreen = ({route, navigation}) => {
           </View>
 
           <View style={styles.details}>
-            <Text style={styles.description}>{service.description}</Text>
+            <Text style={styles.description}>{service.description[loc]}</Text>
           </View>
         </View>
 

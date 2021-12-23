@@ -18,6 +18,7 @@ export default function Input({
   keyboardType,
   onFocus,
   maxLength,
+  editable = true,
 }) {
   const [visible, toggle] = useState(false);
 
@@ -42,6 +43,7 @@ export default function Input({
         onFocus={onFocus}
         maxLength={maxLength}
         underlineColorAndroid={Colors.black}
+        editable={editable}
       />
       {!!error && <Text style={styles.errorText}>{error}</Text>}
     </View>
@@ -51,7 +53,7 @@ export default function Input({
 const styles = StyleSheet.create({
   container: {
     width: wp(80),
-    marginVertical: hp(1),
+    marginVertical: hp(0.5),
   },
   input: {
     width: wp(80),
@@ -62,7 +64,7 @@ const styles = StyleSheet.create({
       android: {},
       ios: {
         marginTop: hp(1.2),
-        height: hp(3.5),
+        height: hp(3),
         borderBottomColor: Colors.boldGreyText,
         borderBottomWidth: 1,
         marginBottom: hp(1),

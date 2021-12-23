@@ -16,9 +16,11 @@ import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
 import ContentWrapper from '../ContentWrapper';
 import { hasNotch } from '../../utils/platform';
+import strings from '../../localization';
 
 
 const PopularItem = ({item, onPress}) => {
+  const loc = strings.getLanguage();
   return (
     <TouchableOpacity
       style={[styles.itemContainer, styles.shadowStyle]}
@@ -26,13 +28,13 @@ const PopularItem = ({item, onPress}) => {
       <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
       <View style={styles.itemTextContainer}>
         <Text style={styles.itemTitle} numberOfLines={2} ellipsizeMode="tail">
-          {item.title}
+          {item.title[loc]}
         </Text>
         <Text
           numberOfLines={2}
           ellipsizeMode="tail"
           style={styles.itemDescription}>
-          {item.description}
+          {item.description[loc]}
         </Text>
       </View>
     </TouchableOpacity>
@@ -51,9 +53,9 @@ export default function PopularServices({
   };
   return (
     <ContentWrapper
-      title={'Popular'}
-      subTitle={'Our most viewed services'}
-      rightButtonText={'View all'}
+      title={strings.headerPopular}
+      subTitle={strings.subHeaderPopular}
+      rightButtonText={strings.viewAll}
       rightButtonPressed={onViewAllPressed}>
       <FlatList
         data={data}

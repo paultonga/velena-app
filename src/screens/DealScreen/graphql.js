@@ -9,8 +9,14 @@ export const GET_DEAL_QUERY = gql`
       thumbnail
       services {
         id
-        title
-        description
+        title {
+          en
+          tr
+        }
+        description {
+          en
+          tr
+        }
         hasDiscount
         price
         discountPrice

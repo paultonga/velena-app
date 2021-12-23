@@ -24,6 +24,7 @@ import messaging from '@react-native-firebase/messaging';
 import {GET_EXPLORE_SCREEN_DATA, REGISTER_PUSH_TOKEN} from './graphql';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import ContentWrapper from '../../component/ContentWrapper';
+import strings from '../../localization';
 
 class SearchScreen extends Component {
   state = {
@@ -123,8 +124,8 @@ class SearchScreen extends Component {
           )}
           {!_.isNull(deal) && (
             <ContentWrapper
-              title="Today's Deal"
-              subTitle="Special offer for today">
+              title={strings.headerTodaysDeal}
+              subTitle={strings.subHeaderDeals}>
               <TouchableOpacity
                 style={[styles.itemContainer, styles.shadowStyle]}
                 onPress={() => this.onDealPressed(deal)}>

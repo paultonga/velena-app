@@ -19,6 +19,7 @@ import {useFocusEffect} from '@react-navigation/core';
 import _ from 'lodash';
 import {GET_EXPLORE_SCREEN_DATA} from '../Search/graphql';
 import ServiceListModal from '../../component/ServiceListModal';
+import strings from '../../localization';
 
 const DealScreen = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
@@ -64,6 +65,7 @@ const DealScreen = ({route, navigation}) => {
   };
 
   const renderItem = ({item}) => {
+    const loc = strings.getLanguage() || 'en';
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -74,13 +76,13 @@ const DealScreen = ({route, navigation}) => {
         />
         <View style={styles.itemDetails}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
-            {item.title}
+            {item.title[loc]}
           </Text>
           <Text
             numberOfLines={2}
             ellipsizeMode="tail"
             style={styles.itemDescription}>
-            {item.description}
+            {item.description[loc]}
           </Text>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>

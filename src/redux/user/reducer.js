@@ -95,16 +95,30 @@ export default function UserReducer(state = INITIAL, action) {
         loading: false,
       };
     }
-    case Types.NOTIFICATION_RECEIVED: {
+    case Types.GET_NOTIFICATIONS_SUCCESS: {
       return {
         ...state,
-        notifications: [...state.notifications, action.payload],
+        notifications: action.payload,
       };
     }
+    case Types.CHANGE_PASSWORD_ERROR:
+    case Types.CHANGE_PASSWORD_SUCCESS:
+    case Types.REQUEST_VERIFICATION_CODE_ERROR:
+    case Types.REQUEST_VERIFICATION_CODE_SUCCESS:
+    case Types.VERIFY_CODE_ERROR:
+    case Types.VERIFY_CODE_SUCCESS:
     case Types.RESET: {
       return {
         ...state,
         loading: false,
+      };
+    }
+    case Types.CHANGE_PASSWORD:
+    case Types.REQUEST_VERIFICATION_CODE:
+    case Types.VERIFY_CODE: {
+      return {
+        ...state,
+        loading: true,
       };
     }
     default: {

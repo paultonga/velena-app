@@ -19,6 +19,7 @@ import {setIntroViewed} from '../../redux/user/actions';
 
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
+import strings from '../../localization';
 
 const Indicator = ({active = false}) => {
   return (

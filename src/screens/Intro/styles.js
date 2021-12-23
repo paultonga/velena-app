@@ -63,7 +63,8 @@ export default StyleSheet.create({
   },
   submitButtonText: {
     fontFamily: Fonts.regular,
-    fontSize: wp(4),
+    fontSize: wp(3.5),
     color: Colors.white,
+    textTransform: 'uppercase',
   },
 });

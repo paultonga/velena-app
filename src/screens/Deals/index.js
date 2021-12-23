@@ -7,6 +7,7 @@ import {STATUS_BAR_STYLES} from '../../utils/constants';
 import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
 import {GET_DEALS_QUERY} from './graphql';
+import strings from '../../localization';
 
 const DealsScreen = ({navigation}) => {
   const {loading, error, data, refetch} = useQuery(GET_DEALS_QUERY);
@@ -70,7 +71,7 @@ const DealsScreen = ({navigation}) => {
         keyExtractor={_keyExtractor}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Deals</Text>
+            <Text style={styles.header}>{strings.tabDeals}</Text>
           </View>
         )}
       />

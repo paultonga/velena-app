@@ -4,10 +4,21 @@ import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import {STATUS_BAR_STYLES} from '../../utils/constants';
 import styles from './styles';
-import {useSelector} from 'react-redux';
+import {useSelector, useDispatch} from 'react-redux';
+import strings from '../../localization';
+import {fetchNotifications} from '../../redux/user/actions';
+import moment from 'moment';
+import {useFocusEffect} from '@react-navigation/core';
 
 const NotificationsScreen = ({navigation}) => {
-  const notifications = useSelector(state => state.account.notifications);
+  const dispatch = useDispatch();
+
+  useFocusEffect(() => {
+    dispatch(fetchNotifications());
+
+  });
+
+  let notifications = useSelector(state => state.account.notifications);
 
 
   const renderItem = ({item}) => {
@@ -27,7 +38,10 @@ const NotificationsScreen = ({navigation}) => {
               numberOfLines={2}
               ellipsizeMode="tail"
               style={styles.itemDescription}>
-              {item.message}
+              {item.description}
+            </Text>
+            <Text style={styles.time}>
+              {moment(item.createdAt).format('lll')}
             </Text>
           </View>
         </View>
@@ -43,7 +57,7 @@ const NotificationsScreen = ({navigation}) => {
     <Screen
       statusBarStyle={STATUS_BAR_STYLES.DARK_CONTENT}
       barBackgroundColor={'white'}>
-      <NavHeader hasBackIcon leftAction={goBack}/>
+      <NavHeader hasBackIcon leftAction={goBack} />
       <FlatList
         contentContainerStyle={styles.scrollViewContent}
         data={notifications}
@@ -51,7 +65,7 @@ const NotificationsScreen = ({navigation}) => {
         keyExtractor={_keyExtractor}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Notifications</Text>
+            <Text style={styles.header}>{strings.notifications}</Text>
           </View>
         )}
       />

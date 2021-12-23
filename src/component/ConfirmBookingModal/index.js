@@ -13,6 +13,7 @@ import {useMutation} from '@apollo/client';
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
 import {ADMIN_BOOKING_DATE_FORMAT} from '../../utils/constants';
+import strings from '../../localization';
 
 const ConfirmBookingModal = ({
   isModalVisible,
@@ -36,6 +37,7 @@ const ConfirmBookingModal = ({
 
   const isConfirmed = booking?.isConfirmed;
   const service = booking?.service;
+  const loc = strings.getLanguage() || 'en';
   return (
     <Modal
       animationIn={'slideInDown'}
@@ -51,7 +53,7 @@ const ConfirmBookingModal = ({
 
         <View style={styles.titleRow}>
           <View>
-            <Text style={styles.title}>{service?.title}</Text>
+            <Text style={styles.title}>{service?.title[loc]}</Text>
             <Text style={styles.date}>
               {moment(booking?.startDate).format(ADMIN_BOOKING_DATE_FORMAT)}
             </Text>

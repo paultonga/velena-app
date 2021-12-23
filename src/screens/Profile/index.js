@@ -17,9 +17,12 @@ import EditProfileModal from '../../component/EditProfileModal';
 import {useFocusEffect} from '@react-navigation/core';
 import {useQuery} from '@apollo/client';
 import {GET_ME_QUERY} from './graphql';
+import strings from '../../localization';
+import ChangeLanguageModal from '../../component/ChangeLanguageModal';
 
 const ProfileScreen = ({navigation, logoutUser, user, reset}) => {
   const [modalVisible, setModalVisible] = React.useState(false);
+  const [languageModalVisible, setLanguageModalVisible] = React.useState(false);
 
   const {loading, error, data, refetch} = useQuery(GET_ME_QUERY);
 
@@ -29,6 +32,11 @@ const ProfileScreen = ({navigation, logoutUser, user, reset}) => {
       reset();
       return () => {};
     }, [refetch, reset]),
+  );
+
+  const toggleLanguageModal = React.useCallback(
+    () => setLanguageModalVisible(state => !state),
+    [],
   );
 
   const toggleModalVisible = React.useCallback(
@@ -73,6 +81,10 @@ const ProfileScreen = ({navigation, logoutUser, user, reset}) => {
         toggleModalVisible();
         break;
       }
+      case PROFILE_LINKS_MAP.CHANGE_LANGUAGE: {
+        toggleLanguageModal();
+        break;
+      }
       case PROFILE_LINKS_MAP.INVITE_FRIENDS: {
         onShare();
         break;
@@ -114,14 +126,14 @@ const ProfileScreen = ({navigation, logoutUser, user, reset}) => {
             key={`ProfileMenuItem${index}`}
             style={[styles.link, styles.shadowStyle]}
             onPress={() => onLinkPressed(link)}>
-            <Text style={styles.linkText}>{link}</Text>
+            <Text style={styles.linkText}>{strings[link]}</Text>
           </TouchableOpacity>
         ))}
         {user?.role === USER_ROLES.ADMIN && (
           <TouchableOpacity
             style={[styles.link, styles.shadowStyle]}
             onPress={() => onLinkPressed(PROFILE_LINKS_MAP.ADMIN)}>
-            <Text style={styles.linkText}>{PROFILE_LINKS_MAP.ADMIN}</Text>
+            <Text style={styles.linkText}>{strings.administrator}</Text>
           </TouchableOpacity>
         )}
         {user?.role === USER_ROLES.STAFF && (
@@ -134,13 +146,17 @@ const ProfileScreen = ({navigation, logoutUser, user, reset}) => {
         <TouchableOpacity
           style={[styles.link, styles.shadowStyle]}
           onPress={() => onLinkPressed(PROFILE_LINKS_MAP.LOG_OUT)}>
-          <Text style={styles.linkText}>{PROFILE_LINKS_MAP.LOG_OUT}</Text>
+          <Text style={styles.linkText}>{strings.logOut}</Text>
         </TouchableOpacity>
       </View>
       <EditProfileModal
         userProfile={userObject}
         isModalVisible={modalVisible}
         onCloseModal={toggleModalVisible}
+      />
+      <ChangeLanguageModal
+        isModalVisible={languageModalVisible}
+        onCloseModal={toggleLanguageModal}
       />
     </View>
   );

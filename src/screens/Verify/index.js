@@ -9,66 +9,68 @@ import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import Fonts from '../../ui/Fonts';
-import * as yup from 'yup';
+import {requestCode, verifyCode} from '../../redux/user/actions';
+import {connect} from 'react-redux';
 
-export default class ForgotPasswordScreen extends Component {
+class VerifyScreen extends Component {
   state = {
-    email: '',
-    error: null,
+    code: '',
   };
+
+  componentDidMount() {
+    const {route} = this.props;
+    const {email} = route.params;
+
+    if (email) {
+      this.props.requestCode({email});
+    }
+  }
 
   gotoLogin = () => {
     this.props.navigation.navigate('Login');
   };
 
-  startVerification = () => {
-    const {email} = this.state;
-    const schema = yup.string().email();
-    if (email) {
-      schema.isValid(email).then(isValid => {
-        if (isValid) {
-          this.props.navigation.navigate('Verify', {
-            email,
-            isResetPassword: true,
-          });
-        } else {
-          this.setState({error: 'Email is not valid.'});
-        }
-      });
-    } else {
-      this.setState({error: 'Email is not valid.'});
-    }
+  verifyCode = () => {
+    const {code} = this.state;
+    const {email} = this.props.route.params;
+    const {isResetPassword = false} = this.props.route.params;
+    this.props.verifyCode({email, code, isResetPassword, type: 'EMAIL'});
   };
 
   goBack = () => {
     this.props.navigation.goBack();
   };
 
+  handleTextChange = code => {
+    this.setState({code});
+  };
+
   render() {
-    const {email, error} = this.state;
+    const {route} = this.props;
+    const {email} = route.params;
+    const {code} = this.state;
     return (
       <Screen>
         <NavHeader hasBackIcon leftAction={this.goBack} />
         <View style={styles.container}>
-          <Text style={styles.header}>Forgot</Text>
-          <Text style={styles.header}>Password?</Text>
+          <Text style={styles.header}>Verify</Text>
           <Text style={styles.instructions}>
-            Enter your email to receive the instructions to reset your password.
+            {`Enter the code sent to ${email}  to continue.`}
           </Text>
           <View style={styles.formContainer}>
             <Input
-              placeholder="Your Email"
+              placeholder="Enter code"
               autoCapitalize="none"
-              value={email}
-              error={error}
-              onTextChange={text => this.setState({email: text})}
-              onFocus={() => this.setState({error: null})}
+              onTextChange={this.handleTextChange}
+              value={code}
+              maxLength={6}
+              keyboardType="number-pad"
             />
 
             <TouchableOpacity
               style={styles.submitButton}
-              onPress={this.startVerification}>
-              <Text style={styles.submitButtonText}>Reset Password</Text>
+              onPress={this.verifyCode}>
+              <Text style={styles.submitButtonText}>Continue</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -121,3 +123,14 @@ const styles = StyleSheet.create({
     color: Colors.white,
   },
 });
+
+const mapStateToProps = state => ({
+  loading: state.account.loading,
+});
+
+const mapDispatchToProps = dispatch => ({
+  requestCode: payload => dispatch(requestCode(payload)),
+  verifyCode: payload => dispatch(verifyCode(payload)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(VerifyScreen);

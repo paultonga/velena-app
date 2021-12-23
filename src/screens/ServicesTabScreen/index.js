@@ -7,6 +7,8 @@ import {STATUS_BAR_STYLES} from '../../utils/constants';
 import {GET_SERVICES_QUERY} from './graphql';
 import {useFocusEffect} from '@react-navigation/core';
 import styles from './styles';
+import strings from '../../localization';
+
 
 const ServicesTabScreen = ({navigation}) => {
   const {loading, error, data, refetch} = useQuery(GET_SERVICES_QUERY);
@@ -27,6 +29,8 @@ const ServicesTabScreen = ({navigation}) => {
   };
 
   const renderItem = ({item}) => {
+
+    const langCode = strings.getLanguage() || 'en';
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -37,13 +41,13 @@ const ServicesTabScreen = ({navigation}) => {
         />
         <View style={styles.itemDetails}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
-            {item.title}
+            {item.title[langCode]}
           </Text>
           <Text
             numberOfLines={2}
             ellipsizeMode="tail"
             style={styles.itemDescription}>
-            {item.description}
+            {item.description[langCode]}
           </Text>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>
@@ -74,7 +78,7 @@ const ServicesTabScreen = ({navigation}) => {
         keyExtractor={_keyExtractor}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Services</Text>
+            <Text style={styles.header}>{strings.tabServices}</Text>
           </View>
         )}
       />

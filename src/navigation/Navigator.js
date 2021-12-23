@@ -37,6 +37,9 @@ import CreditsScreen from '../screens/CreditsScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 import DealsManagement from '../screens/DealsManagement';
 import AccountingScreen from '../screens/Accounting';
+import strings from '../localization';
+import VerifyScreen from '../screens/Verify';
+import ResetPassword from '../screens/ResetPassword';
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -68,6 +71,16 @@ const AuthStack = () => (
     <Stack.Screen
       name="Forgot"
       component={ForgotPasswordScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Verify"
+      component={VerifyScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="Reset"
+      component={ResetPassword}
       options={{headerShown: false}}
     />
   </Stack.Navigator>
@@ -102,7 +115,7 @@ const MainTabNavigation = () => (
     }}>
     <Tab.Screen
       options={{
-        tabBarLabel: 'Explore',
+        tabBarLabel: strings.tabExplore,
         tabBarIcon: ({color, size, focused}) => (
           <Icon
             size={size}
@@ -117,7 +130,7 @@ const MainTabNavigation = () => (
 
     <Tab.Screen
       options={{
-        tabBarLabel: 'Services',
+        tabBarLabel: strings.tabServices,
         tabBarIcon: ({color, size, focused}) => (
           <Icon
             size={size}
@@ -132,7 +145,7 @@ const MainTabNavigation = () => (
 
     <Tab.Screen
       options={{
-        tabBarLabel: 'Deals',
+        tabBarLabel: strings.tabDeals,
         tabBarIcon: ({color, size, focused}) => (
           <Icon
             size={size}
@@ -147,7 +160,7 @@ const MainTabNavigation = () => (
 
     <Tab.Screen
       options={{
-        tabBarLabel: 'Bookings',
+        tabBarLabel: strings.tabBookings,
         tabBarIcon: ({color, size, focused}) => (
           <Icon
             size={size}
@@ -162,7 +175,7 @@ const MainTabNavigation = () => (
 
     <Tab.Screen
       options={{
-        tabBarLabel: 'Profile',
+        tabBarLabel: strings.tabProfile,
         tabBarIcon: ({color, size, focused}) => (
           <Icon
             size={size}

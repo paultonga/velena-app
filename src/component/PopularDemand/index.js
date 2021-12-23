@@ -8,6 +8,7 @@ import {
 import Fonts from '../../ui/Fonts';
 import Colors from '../../ui/Colors';
 import LinearGradient from 'react-native-linear-gradient';
+import strings from '../../localization';
 
 const PopularData = [
   {
@@ -23,6 +24,7 @@ const PopularData = [
 ];
 
 const PopularItem = ({item}) => {
+  const loc = strings.getLanguage();
   return (
     <TouchableOpacity style={[styles.itemContainer, styles.shadowStyle]}>
       <Image source={{uri: item.thumbnail}} style={styles.thumbnail} />
@@ -31,7 +33,7 @@ const PopularItem = ({item}) => {
         locations={[0, 1.0]}
         colors={['rgba(0,0,0,0.00)', 'rgba(0,0,0,0.80)']}>
         <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
-          {item.title}
+          {item.title[loc]}
         </Text>
       </LinearGradient>
     </TouchableOpacity>
@@ -42,7 +44,7 @@ export default function PopularItemsList({ data }) {
   const _keyExtractor = (item, index) => `favorites-${item.id}-${index}`;
   return (
     <View style={styles.container}>
-      <Text style={styles.header}>Favorites</Text>
+      <Text style={styles.header}>{strings.headerFavorites}</Text>
       <FlatList
         data={data}
         keyExtractor={_keyExtractor}

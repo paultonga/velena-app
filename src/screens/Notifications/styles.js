@@ -80,6 +80,11 @@ export default StyleSheet.create({
     fontFamily: Fonts.regular,
     textTransform: 'uppercase',
   },
+  time: {
+    fontFamily: Fonts.bold,
+    marginTop: 5,
+    fontSize: wp(3),
+  },
   detailsContainer: {
     flexDirection: 'row',
     alignItems: 'flex-start',

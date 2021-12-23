@@ -12,8 +12,14 @@ export const GET_EXPLORE_SCREEN_DATA = gql`
       }
       popular {
         id
-        title
-        description
+        title {
+          tr
+          en
+        }
+        description {
+          tr
+          en
+        }
         thumbnail
         hasDiscount
         discountPrice
@@ -27,8 +33,14 @@ export const GET_EXPLORE_SCREEN_DATA = gql`
       }
       favorites {
         id
-        title
-        description
+        title {
+          tr
+          en
+        }
+        description {
+          tr
+          en
+        }
         thumbnail
       }
     }

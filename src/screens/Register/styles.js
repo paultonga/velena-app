@@ -8,9 +8,11 @@ import {
 
 export default StyleSheet.create({
   container: {
+    flex: 1,
     paddingLeft: wp(5),
+    paddingBottom: 50,
     paddingRight: wp(5),
-    paddingTop: hp(4),
+    alignSelf: 'center',
   },
   header: {
     fontFamily: Fonts.header,
@@ -18,8 +20,8 @@ export default StyleSheet.create({
     color: Colors.headerGreyText,
   },
   formContainer: {
+    flex: 1,
     marginTop: hp(1),
-    //height: hp(42),
     justifyContent: 'space-between',
     alignSelf: 'center',
   },
@@ -58,5 +60,37 @@ export default StyleSheet.create({
     letterSpacing: 2,
     textTransform: 'uppercase',
     color: Colors.white,
+  },
+  tosContainer: {
+    paddingHorizontal: wp(5),
+    marginTop: hp(2.5),
+    alignSelf: 'center',
+  },
+  tosText: {
+    textAlign: 'center',
+    fontFamily: Fonts.regular,
+  },
+  tosBoldUnderline: {
+    fontWeight: 'bold',
+    textDecorationLine: 'underline',
+  },
+  genderContainer: {
+    height: hp(10),
+    marginTop: hp(1.4),
+  },
+  genderHeader: {
+    fontFamily: Fonts.regular,
+    fontSize: wp(4),
+  },
+  gender: {
+    fontSize: wp(4),
+    marginLeft: wp(2),
+    marginRight: wp(5),
+    fontFamily: Fonts.regular,
+  },
+  genderRow: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });

@@ -4,8 +4,14 @@ export const GET_SERVICE_QUERY = gql`
   query getService($id: ID!) {
     service: getService(filter: {serviceId: $id}) {
       id
-      title
-      description
+      title {
+        en
+        tr
+      }
+      description {
+        en
+        tr
+      }
       hasDiscount
       price
       discountPrice

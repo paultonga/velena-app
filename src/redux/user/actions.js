@@ -12,6 +12,21 @@ export const Types = {
   UPDATE_ERROR: 'user/UPDATE_ERROR',
   SET_INTRO_VIEWED: 'user/SET_INTRO_VIEWED',
   NOTIFICATION_RECEIVED: 'user/NOTIFICATION_RECEIVED',
+
+  VERIFY_CODE: 'user/VERIFY_CODE',
+  VERIFY_CODE_SUCCESS: 'user/VERIFY_CODE_SUCCESS',
+  VERIFY_CODE_ERROR: 'user/VERIFY_CODE_ERROR',
+
+  CHANGE_PASSWORD: 'user/CHANGE_PASSWORD',
+  CHANGE_PASSWORD_SUCCESS: 'user/CHANGE_PASSOWRD_SUCCESS',
+  CHANGE_PASSWORD_ERROR: 'user/CHANGE_PASSWORD_ERROR',
+
+  REQUEST_VERIFICATION_CODE: 'user/REQUEST_VERIFICATION_CODE',
+  REQUEST_VERIFICATION_CODE_SUCCESS: 'user/REQUEST_VERIFICATION_CODE_SUCCESS',
+  REQUEST_VERIFICATION_CODE_ERROR: 'user/REQUEST_VERIFICATION_CODE_ERROR',
+
+  GET_NOTIFICATIONS_SUCCESS: 'user/GET_NOTIFICATIONS_SUCCESS',
+  GET_NOTIFICATIONS_ERROR: 'user/GET_NOTIFICATIONS_ERROR',
 };
 
 export const loginUser = payload => ({
@@ -39,4 +54,23 @@ export const setIntroViewed = () => ({
 
 export const reset = () => ({
   type: Types.RESET,
+});
+
+export const verifyCode = payload => ({
+  type: Types.VERIFY_CODE,
+  payload,
+});
+
+export const requestCode = payload => ({
+  type: Types.REQUEST_VERIFICATION_CODE,
+  payload,
+});
+
+export const changePassword = payload => ({
+  type: Types.CHANGE_PASSWORD,
+  payload,
+});
+
+export const fetchNotifications = () => ({
+  type: Types.NOTIFICATION_RECEIVED,
 });

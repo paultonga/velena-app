@@ -9,8 +9,14 @@ export const GET_ASSIGNED_BOOKINGS_QUERY = gql`
       isConfirmed
       service {
         id
-        title
-        description
+        title {
+          tr
+          en
+        }
+        description {
+          en
+          tr
+        }
         hasDiscount
         discountPrice
         price
@@ -39,8 +45,14 @@ export const GET_ALL_BOOKINGS_QUERY = gql`
       isConfirmed
       service {
         id
-        title
-        description
+        title {
+          tr
+          en
+        }
+        description {
+          tr
+          en
+        }
         hasDiscount
         discountPrice
         price

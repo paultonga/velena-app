@@ -11,59 +11,43 @@ import NavHeader from '../../component/NavHeader';
 import Screen from '../../component/Screen';
 import Colors from '../../ui/Colors';
 import _ from 'lodash';
-import {loginUser} from '../../redux/user/actions';
+import {changePassword} from '../../redux/user/actions';
 import {connect} from 'react-redux';
 import {STATUS_BAR_STYLES} from '../../utils/constants';
 import styles from './styles';
 import strings from '../../localization';
 
-class LoginScreen extends Component {
+class ResetPasswordScreen extends Component {
   state = {
-    shouldRemember: false,
-    phone: '',
+    confirmPassword: '',
     password: '',
     errors: {},
   };
 
   validate = () => {
-    const {password, phone} = this.state;
+    const {password, confirmPassword} = this.state;
     const errors = {};
-
-    if (!phone) {
-      errors.phone = 'Phone is required';
-    }
 
     if (!password || password.length < 7) {
       errors.password = 'Password length should be atleast 7';
     }
 
-    _.isEmpty(errors) ? this.login() : this.setState({errors});
+    if (password !== confirmPassword) {
+      errors.confirmPassword = 'Passwords do not match';
+    }
+
+
+    _.isEmpty(errors) ? this.changePassword() : this.setState({errors});
   };
 
-  login = async () => {
-    const {password, phone} = this.state;
-    this.props.loginUser({password, phone});
-  };
-
-  toggle = () => {
-    const {shouldRemember} = this.state;
-    this.setState({shouldRemember: !shouldRemember});
-  };
-
-  gotoMain = () => {
-    this.props.navigation.replace('Main');
+  changePassword = async () => {
+    const {email} = this.props.route.params;
+    const {password} = this.state;
+    this.props.changePassword({password, email});
   };
 
   goBack = () => {
     this.props.navigation.goBack();
-  };
-
-  gotoRegister = () => {
-    this.props.navigation.navigate('Register');
-  };
-
-  gotoForgotPassword = () => {
-    this.props.navigation.navigate('Forgot');
   };
 
   handleInput = (source, text) => {
@@ -80,7 +64,7 @@ class LoginScreen extends Component {
   };
 
   render() {
-    const {shouldRemember, errors, phone, password} = this.state;
+    const {confirmPassword, errors, password} = this.state;
     const {loading} = this.props;
 
     return (
@@ -89,18 +73,8 @@ class LoginScreen extends Component {
         barBackgroundColor={'white'}>
         <NavHeader hasBackIcon leftAction={this.goBack} hideScan />
         <View style={styles.container}>
-          <Text style={styles.header}>{strings.login}</Text>
+          <Text style={styles.header}>{'Reset Password'}</Text>
           <View style={styles.formContainer}>
-            <Input
-              onTextChange={text => this.handleInput('phone', text)}
-              onFocus={() => this.handleFocus('phone')}
-              value={phone}
-              placeholder={strings.phone}
-              autoCapitalize="none"
-              error={errors?.phone}
-              keyboardType={'phone-pad'}
-              maxLength={11}
-            />
             <Input
               onTextChange={text => this.handleInput('password', text)}
               onFocus={() => this.handleFocus('password')}
@@ -109,6 +83,15 @@ class LoginScreen extends Component {
               isSecure
               autoCapitalize="none"
               error={errors?.password}
+            />
+            <Input
+              onTextChange={text => this.handleInput('confirmPassword', text)}
+              onFocus={() => this.handleFocus('confirmPassword')}
+              value={confirmPassword}
+              placeholder={strings.confirmPassword}
+              isSecure
+              autoCapitalize="none"
+              error={errors?.confirmPassword}
             />
             <View style={styles.subContainer}>
               <View style={styles.rememberContainer}>
@@ -120,13 +103,6 @@ class LoginScreen extends Component {
                 />
                 <Text style={styles.rememberText}>{strings.rememberMe}</Text> */}
               </View>
-              <TouchableOpacity
-                style={styles.forgotButton}
-                onPress={this.gotoForgotPassword}>
-                <Text style={styles.forgotButtonText}>
-                  {strings.forgotPassword}
-                </Text>
-              </TouchableOpacity>
             </View>
             <TouchableOpacity
               style={styles.submitButton}
@@ -135,7 +111,7 @@ class LoginScreen extends Component {
               {loading ? (
                 <ActivityIndicator color="white" />
               ) : (
-                <Text style={styles.submitButtonText}>{strings.login}</Text>
+                <Text style={styles.submitButtonText}>{'Reset Password'}</Text>
               )}
             </TouchableOpacity>
           </View>
@@ -149,7 +125,7 @@ const mapStateToProps = state => ({
   loading: state.account.loading,
 });
 const mapDispatchToProps = dispatch => ({
-  loginUser: payload => dispatch(loginUser(payload)),
+  changePassword: payload => dispatch(changePassword(payload)),
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(ResetPasswordScreen);

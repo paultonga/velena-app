@@ -14,6 +14,7 @@ import {useQuery} from '@apollo/client';
 import {useFocusEffect} from '@react-navigation/core';
 import _ from 'lodash';
 import {GET_EXPLORE_SCREEN_DATA} from '../Search/graphql';
+import strings from '../../localization';
 
 const ServiceCategoryScreen = ({route, navigation}) => {
   const {
@@ -40,6 +41,7 @@ const ServiceCategoryScreen = ({route, navigation}) => {
   };
 
   const renderItem = ({item}) => {
+    const loc = strings.getLanguage() || 'en';
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -50,13 +52,13 @@ const ServiceCategoryScreen = ({route, navigation}) => {
         />
         <View style={styles.itemDetails}>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemTitle}>
-            {item.title}
+            {item.title[loc]}
           </Text>
           <Text
             numberOfLines={2}
             ellipsizeMode="tail"
             style={styles.itemDescription}>
-            {item.description}
+            {item.description[loc]}
           </Text>
           <View style={styles.priceContainer}>
             <Text style={styles.price}>

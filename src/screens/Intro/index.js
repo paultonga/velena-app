@@ -2,6 +2,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {Component} from 'react';
 import {Text, View, FlatList, Image, TouchableOpacity} from 'react-native';
 import Screen from '../../component/Screen';
+import strings from '../../localization';
 import {STORAGE, INTRO_SCREEN_DATA} from '../../utils/constants';
 import styles from './styles';
 
@@ -75,7 +76,7 @@ class IntroScreen extends Component {
           <TouchableOpacity
             style={styles.submitButton}
             onPress={this.gotoWelcomeScreen}>
-            <Text style={styles.submitButtonText}>Get Started</Text>
+            <Text style={styles.submitButtonText}>{strings.getStarted}</Text>
           </TouchableOpacity>
           <View style={styles.indicatorContainer}>
             {INTRO_SCREEN_DATA.map((_, itemIndex) => (

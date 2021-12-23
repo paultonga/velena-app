@@ -4,7 +4,15 @@ import * as actions from './actions';
 import navigation from '../../navigation/NavigationService';
 
 import {client} from '../../../App';
-import {LOGIN_USER, REGISTER_USER, UPDATE_USER} from './graphql';
+import {
+  CHANGE_PASSWORD,
+  GET_NOTIFICATIONS,
+  LOGIN_USER,
+  REGISTER_USER,
+  REQUEST_VERIFICATION_CODE,
+  UPDATE_USER,
+  VERIFY_CODE,
+} from './graphql';
 
 function showAlert(title, message) {
   Alert.alert(title, message);
@@ -12,6 +20,107 @@ function showAlert(title, message) {
 
 function* logoutSaga() {
   yield navigation.navigate('Auth', {screen: 'Welcome'});
+}
+
+function* getNotificationsSaga() {
+  try {
+    const response = yield call(client.query, {query: GET_NOTIFICATIONS});
+    if (response.data) {
+      const notifications = response.data.getNotifications;
+      yield put({
+        type: actions.Types.GET_NOTIFICATIONS_SUCCESS,
+        payload: notifications,
+      });
+    } else {
+      yield put({
+        type: actions.Types.GET_NOTIFICATIONS_ERROR,
+        payload: 'Error encountered while fetching notification',
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: actions.Types.GET_NOTIFICATIONS_ERROR,
+      payload: error,
+    });
+  }
+}
+
+function* verifyCodeSaga({payload}) {
+  try {
+    const {code, email, type} = payload;
+    let response = yield call(client.mutate, {
+      mutation: VERIFY_CODE,
+      variables: {code, email, type},
+    });
+
+    if (response.data.verifyCode?.success) {
+      yield put({
+        type: actions.Types.VERIFY_CODE_SUCCESS,
+      });
+      if (payload.isResetPassword) {
+        yield navigation.navigate('Reset', {email});
+      } else {
+        yield navigation.replace('Main');
+      }
+    } else {
+      yield put({
+        type: actions.Types.VERIFY_CODE_ERROR,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: actions.Types.VERIFY_CODE_ERROR,
+    });
+  }
+}
+
+function* requestCodeSaga({payload}) {
+  try {
+    let response = yield call(client.mutate, {
+      mutation: REQUEST_VERIFICATION_CODE,
+      variables: payload,
+    });
+
+    if (response.data.requestVerificationCode?.success) {
+      yield put({
+        type: actions.Types.REQUEST_VERIFICATION_CODE_SUCCESS,
+      });
+    } else {
+      yield put({
+        type: actions.Types.REQUEST_VERIFICATION_CODE_ERROR,
+      });
+    }
+  } catch (error) {
+    yield put({
+      type: actions.Types.REQUEST_VERIFICATION_CODE_SUCCESS,
+    });
+  }
+}
+
+function* changePasswordSaga({payload}) {
+  try {
+    let response = yield call(client.mutate, {
+      mutation: CHANGE_PASSWORD,
+      variables: payload,
+    });
+
+    if (response.data.changePassword?.success) {
+      yield put({
+        type: actions.Types.CHANGE_PASSWORD_SUCCESS,
+      });
+      yield navigation.navigate('Login');
+    } else {
+      yield put({
+        type: actions.Types.CHANGE_PASSWORD_ERROR,
+      });
+      yield showAlert('Error!', 'Password update failed.');
+    }
+  } catch (error) {
+    yield put({
+      type: actions.Types.CHANGE_PASSWORD_ERROR,
+    });
+    yield showAlert('Password update failed!', error.message);
+  }
 }
 
 function* updateUserSaga({payload}) {
@@ -80,7 +189,7 @@ function* loginUserSaga({payload}) {
       yield navigation.replace('Main');
     } else {
       const errorMessage = response.error?.message || 'Unable to login user.';
-      
+
       yield put({
         type: actions.Types.LOGIN_ERROR,
         payload: {
@@ -107,6 +216,9 @@ function* registerUserSaga({payload}) {
       password: payload.password,
       firstName: payload.firstName,
       lastName: payload.lastName,
+      dob: payload.dob,
+      email: payload.email,
+      gender: payload.gender,
     };
 
     let response = yield call(client.mutate, {
@@ -128,9 +240,10 @@ function* registerUserSaga({payload}) {
         type: actions.Types.SIGNUP_SUCCESS,
         payload: {sessionToken: token, user},
       });
-      yield navigation.replace('Main');
+      yield navigation.navigate('Verify', {email: payload.email});
     } else {
-      const errorMessage = response.data.register?.message || 'Unable to create account.';
+      const errorMessage =
+        response.data.register?.message || 'Unable to create account.';
       yield put({
         type: actions.Types.SIGNUP_ERROR,
         payload: {
@@ -166,11 +279,31 @@ function* watchUpdateSaga() {
   yield takeLatest(actions.Types.UPDATE, updateUserSaga);
 }
 
+function* watchChangePasswordSaga() {
+  yield takeLatest(actions.Types.CHANGE_PASSWORD, changePasswordSaga);
+}
+
+function* watchRequestCodeSaga() {
+  yield takeLatest(actions.Types.REQUEST_VERIFICATION_CODE, requestCodeSaga);
+}
+
+function* watchVerifyCodeSaga() {
+  yield takeLatest(actions.Types.VERIFY_CODE, verifyCodeSaga);
+}
+
+function* watchGetNotificationsSaga() {
+  yield takeLatest(actions.Types.NOTIFICATION_RECEIVED, getNotificationsSaga);
+}
+
 const UserSagas = [
   fork(watchLoginSaga),
   fork(watchLogoutSaga),
   fork(watchRegisterSaga),
   fork(watchUpdateSaga),
+  fork(watchChangePasswordSaga),
+  fork(watchRequestCodeSaga),
+  fork(watchVerifyCodeSaga),
+  fork(watchGetNotificationsSaga),
 ];
 
 export default UserSagas;

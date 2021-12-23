@@ -21,6 +21,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import moment from 'moment';
 import { useFocusEffect } from '@react-navigation/native';
 import NavHeader from '../../component/NavHeader';
+import strings from '../../localization';
 
 export const GET_BOOKINGS_QUERY = gql`
   query GetBookingss {
@@ -30,8 +31,14 @@ export const GET_BOOKINGS_QUERY = gql`
       isFlexible
       service {
         id
-        title
-        description
+        title {
+          tr
+          en
+        }
+        description {
+          tr
+          en
+        }
         hasDiscount
         discountPrice
         price
@@ -65,6 +72,7 @@ const BookingssScreen = ({navigation}) => {
 
   const renderItem = ({item}) => {
     const {service} = item;
+    const loc = strings.getLanguage() || 'en';
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -74,8 +82,8 @@ const BookingssScreen = ({navigation}) => {
           style={[styles.itemThumbnail, styles.shadowStyle]}
         />
         <View style={styles.itemDetails}>
-          <Text style={styles.itemTitle}>{service.title}</Text>
-          <Text style={styles.itemDescription}>{service.description}</Text>
+          <Text style={styles.itemTitle}>{service.title[loc]}</Text>
+          <Text style={styles.itemDescription}>{service.description[loc]}</Text>
           <View style={styles.timeContainer}>
             <Icon name="time" size={wp(5)} color={Colors.buttonGrey} />
             <Text style={styles.time}>
@@ -100,14 +108,14 @@ const BookingssScreen = ({navigation}) => {
         renderItem={renderItem}
         ListHeaderComponent={() => (
           <View style={styles.pageHeader}>
-            <Text style={styles.header}>Bookings</Text>
+            <Text style={styles.header}>{strings.tabBookings}</Text>
           </View>
         )}
         ListEmptyComponent={() => (
           <View style={styles.emptyContainer}>
-            <Text style={styles.emptyText}>You've not booked yet!</Text>
+            <Text style={styles.emptyText}>{strings.noBookingError}</Text>
             <TouchableOpacity style={styles.bookNowButton} onPress={onBookNow}>
-              <Text style={styles.bookNowButtonText}>BOOK NOW</Text>
+              <Text style={styles.bookNowButtonText}>{strings.bookNow}</Text>
             </TouchableOpacity>
           </View>
         )}

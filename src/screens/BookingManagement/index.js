@@ -19,6 +19,7 @@ import {
 import {useFocusEffect} from '@react-navigation/native';
 import {GET_ALL_BOOKINGS_QUERY, GET_ASSIGNED_BOOKINGS_QUERY} from './graphql';
 import ConfirmBookingModal from '../../component/ConfirmBookingModal';
+import strings from '../../localization';
 
 const BookingManagementScreen = ({navigation, route}) => {
   const {user} = route.params;
@@ -62,6 +63,7 @@ const BookingManagementScreen = ({navigation, route}) => {
   const renderItem = ({item}) => {
     const {service} = item;
     const isConfirmed = item?.isConfirmed;
+    const loc = strings.getLanguage() || 'en';
     return (
       <TouchableOpacity
         style={styles.itemContainer}
@@ -72,7 +74,7 @@ const BookingManagementScreen = ({navigation, route}) => {
         />
         <View style={styles.itemDetails}>
           <Text numberOfLines={1} ellipsizeMode="tail" style={styles.itemTitle}>
-            {service.title}
+            {service.title[loc]}
           </Text>
           <View style={styles.timeContainer}>
             <Icon

@@ -4,8 +4,14 @@ export const GET_SERVICES_QUERY = gql`
   query GetServices {
     getServices {
       id
-      title
-      description
+      title {
+        en
+        tr
+      }
+      description {
+        en
+        tr
+      }
       hasDiscount
       discountPrice
       price
