@@ -7,5 +7,6 @@ export default {
     deals: require('../../assets/icons/Icon-deals.png'),
     star: require('../../assets/icons/icon-star.png'),
     avatar: require('../../assets/images/avatar.png'),
+    placeholder: require('../../assets/images/placeholder.png'),
   },
 };

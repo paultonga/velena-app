@@ -75,9 +75,8 @@ export default StyleSheet.create({
     marginBottom: hp(2),
   },
   detail: {
-      alignItems: 'flex-start',
+    alignItems: 'flex-start',
     marginVertical: hp(1),
-
   },
   detailLabel: {
     fontFamily: Fonts.extraBold,
@@ -86,5 +85,17 @@ export default StyleSheet.create({
   },
   detailContent: {
     fontFamily: Fonts.regular,
-    fontSize: wp(3.5),  }
+    fontSize: wp(3.5),
+  },
+  deleteButton: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingVertical: hp(1),
+    marginTop: hp(2),
+  },
+  deleteButtonText: {
+    color: 'red',
+    fontFamily: Fonts.extraBold,
+    fontSize: wp(4),
+  }
 });

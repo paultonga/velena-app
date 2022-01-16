@@ -8,7 +8,7 @@ import {
 import Icon from 'react-native-vector-icons/AntDesign';
 import styles from './styles';
 import Colors from '../../ui/Colors';
-import {CONFIRM_BOOKING_MUTATION} from './graphql';
+import {CONFIRM_BOOKING_MUTATION, DELETE_BOOKING_MUTATION} from './graphql';
 import {useMutation} from '@apollo/client';
 import DropDownPicker from 'react-native-dropdown-picker';
 import moment from 'moment';
@@ -31,9 +31,18 @@ const ConfirmBookingModal = ({
     {onCompleted: onComplete},
   );
 
+  const [
+    deleteBooking,
+    {data: deleteBookingData, loading: deleteBookingLoading},
+  ] = useMutation(DELETE_BOOKING_MUTATION, {onCompleted: onComplete});
+
   const handleBooking = ({isConfirmed, id}) => {
     conirmBooking({variables: {isConfirmed, id, staffId: value}});
   };
+
+  const onDeleteBooking = React.useCallback(() => {
+    deleteBooking({variables: {id: booking.id}});
+  }, [booking, deleteBooking]);
 
   const isConfirmed = booking?.isConfirmed;
   const service = booking?.service;
@@ -88,13 +97,17 @@ const ConfirmBookingModal = ({
           onPress={() =>
             handleBooking({isConfirmed: !isConfirmed, id: booking.id})
           }>
-          {loading ? (
+          {loading || deleteBookingLoading ? (
             <ActivityIndicator color="white" />
           ) : (
             <Text style={styles.submitButtonText}>
               {isConfirmed ? 'CANCEL BOOKING' : 'CONFIRM BOOKING'}
             </Text>
           )}
+        </TouchableOpacity>
+        
+        <TouchableOpacity style={styles.deleteButton} onPress={onDeleteBooking}>
+          <Text style={styles.deleteText}>Delete Booking</Text>
         </TouchableOpacity>
       </View>
     </Modal>

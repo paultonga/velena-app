@@ -25,8 +25,7 @@ import PushNotification from 'react-native-push-notification';
 import PushNotificationIOS from '@react-native-community/push-notification-ios';
 import {Types} from './src/redux/user/actions';
 
-const API_URL = 'https://6ed5edb35f36.ngrok.io/graphql';
-//const API_URL = 'http://212.175.35.110:3000/graphql';
+const API_URL = 'https://velena-graphql-api.herokuapp.com/graphql';
 
 const httpLink = new createHttpLink({uri: API_URL});
 

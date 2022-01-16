@@ -24,12 +24,16 @@ import {GET_BOOKINGS_QUERY} from '../../screens/Bookings';
 import DatePicker from 'react-native-date-picker';
 import moment from 'moment';
 import Images from '../../ui/Images';
+import strings from '../../localization';
 
 const GET_SERVICES_NAMES = gql`
   query GetServicesNames {
     getServices {
       id
-      title
+      title {
+        en
+        tr
+      }
     }
   }
 `;
@@ -55,6 +59,7 @@ class ServiceListModal extends Component {
   render() {
     const {isModalVisible, onCloseModal} = this.props;
     const {services} = this.state;
+    const loc = strings.getLanguage() || 'en';
 
     return (
       <Modal
@@ -79,7 +84,7 @@ class ServiceListModal extends Component {
               <TouchableOpacity
                 style={styles.item}
                 onPress={() => onCloseModal({item})}>
-                <Text style={styles.itemTitle}>{item.title}</Text>
+                <Text style={styles.itemTitle}>{item.title[loc]}</Text>
               </TouchableOpacity>
             )}
           />

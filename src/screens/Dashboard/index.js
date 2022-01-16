@@ -69,11 +69,11 @@ const DashboardScreen = ({navigation, route}) => {
 
               <TouchableOpacity
                 onPress={() => {
-                  navigation.navigate('Accounting');
+                  navigation.navigate('ServicesManagement');
                 }}
                 style={styles.menuItem}>
                 <Icon name="book" size={wp(18)} />
-                <Text style={styles.menuText}>Accounting</Text>
+                <Text style={styles.menuText}>Services Management</Text>
               </TouchableOpacity>
             </View>
           </>
@@ -91,7 +91,7 @@ const DashboardScreen = ({navigation, route}) => {
 
             <TouchableOpacity onPress={handleMenuPress} style={styles.menuItem}>
               <Icon name="book" size={wp(18)} />
-              <Text style={styles.menuText}>Accounting</Text>
+              <Text style={styles.menuText}>Services Management</Text>
             </TouchableOpacity>
           </View>
         )}
