@@ -1,5 +1,11 @@
 import React, {Component} from 'react';
-import {Text, View, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {
+  Text,
+  View,
+  TouchableOpacity,
+  ActivityIndicator,
+  Alert,
+} from 'react-native';
 import Modal from 'react-native-modal';
 import {
   heightPercentageToDP as hp,
@@ -10,7 +16,7 @@ import styles from './styles';
 import Colors from '../../ui/Colors';
 import {useMutation} from '@apollo/client';
 import {USER_ROLES} from '../../utils/constants';
-import {MODIFY_USER_ROLE_MUTATION} from './graphql';
+import {DELETE_USER_MUTATION, MODIFY_USER_ROLE_MUTATION} from './graphql';
 
 const UserManagementModal = ({
   isModalVisible,
@@ -20,12 +26,45 @@ const UserManagementModal = ({
 }) => {
   const [modifyUserRole, {data, loading}] = useMutation(
     MODIFY_USER_ROLE_MUTATION,
-    {onCompleted: onComplete, onError: (error) => console.log('[ERROR]', error)},
+    {onCompleted: onComplete, onError: error => console.log('[ERROR]', error)},
   );
+
+  const [deleteUser, {data: deleteUserData, loading: deleteUserLoading}] =
+    useMutation(DELETE_USER_MUTATION, {
+      onCompleted: onComplete,
+      onError: error => console.log('[deleteUser Error]: ', error),
+    });
 
   const handleChange = ({userId, role}) => {
     modifyUserRole({variables: {userId, role}});
   };
+
+  const showUserDeleteWarning = React.useCallback(
+    userId => {
+      Alert.alert(
+        'Warning!',
+        'This action will delete every data about this user, including Bookings. Are you sure you want to continue?',
+        [
+          {
+            text: 'Delete User',
+            onPress: () => onDeleteUser(userId),
+          },
+          {
+            text: 'Cancel',
+            onPress: () => {},
+          },
+        ],
+      );
+    },
+    [onDeleteUser],
+  );
+
+  const onDeleteUser = React.useCallback(
+    userId => {
+      deleteUser({variables: {userId}});
+    },
+    [deleteUser],
+  );
 
   const isUser = user?.role === USER_ROLES.CUSTOMER;
 
@@ -64,13 +103,19 @@ const UserManagementModal = ({
               role: isUser ? USER_ROLES.STAFF : USER_ROLES.CUSTOMER,
             })
           }>
-          {loading ? (
+          {loading || deleteUserLoading ? (
             <ActivityIndicator color="white" />
           ) : (
             <Text style={styles.submitButtonText}>
               {isUser ? 'CHANGE TO STAFF' : 'CHANGE TO USER'}
             </Text>
           )}
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => showUserDeleteWarning(user.id)}>
+          <Text style={styles.deleteButtonText}>Delete User Account</Text>
         </TouchableOpacity>
       </View>
     </Modal>

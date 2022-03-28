@@ -9,7 +9,6 @@ import Fonts from '../../ui/Fonts';
 export default StyleSheet.create({
   scrollViewContent: {
     paddingHorizontal: wp(8),
-    backgroundColor: Colors.white,
   },
   pageHeader: {
     width: wp(100),
@@ -32,21 +31,9 @@ export default StyleSheet.create({
     },
   },
   itemContainer: {
-    marginRight: wp(4),
-    height: hp(27),
-    width: wp(85),
-    borderRadius: 15,
-    marginBottom: hp(2),
-  },
-  thumbnail: {
-    height: hp(15),
-    width: wp(85),
-    borderTopRightRadius: 15,
-    borderTopLeftRadius: 15,
-  },
-  itemTextContainer: {
-    marginTop: hp(2),
-    marginHorizontal: wp(3),
+    flexDirection: 'row',
+    marginBottom: hp(3),
+    paddingRight: wp(2),
   },
   itemDetails: {
     justifyContent: 'space-evenly',
@@ -59,6 +46,7 @@ export default StyleSheet.create({
     marginRight: wp(3),
   },
   itemTitle: {
+    flex: 1,
     fontFamily: Fonts.extraBold,
     fontSize: wp(4),
     flexWrap: 'wrap',
@@ -79,24 +67,6 @@ export default StyleSheet.create({
   currency: {
     fontFamily: Fonts.regular,
     textTransform: 'uppercase',
-  },
-  detailsContainer: {
-    flexDirection: 'row',
-    alignItems: 'flex-start',
-    justifyContent: 'space-between',
-  },
-  percentageContainer: {
-    flexDirection: 'row',
-    marginRight: wp(4),
-    alignSelf: 'center',
-  },
-  percentage: {
-    fontFamily: Fonts.light,
-    fontSize: wp(8),
-  },
-  percentageSymbol: {
-    fontFamily: Fonts.light,
-    fontSize: wp(4),
   },
   fabContainer: {
     position: 'absolute',

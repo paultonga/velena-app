@@ -7,3 +7,11 @@ export const MODIFY_USER_ROLE_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_USER_MUTATION = gql`
+  mutation DeleteUserMutation($userId: ID!) {
+    deleteUser(userId: $userId) {
+      success
+    }
+  }
+`;

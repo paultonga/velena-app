@@ -24,15 +24,15 @@ const UserManagementScreen = ({navigation}) => {
   );
 
   const onClose = () => setModalVisible(false);
-  
+
   const onComplete = () => {
-      onClose();
-      refetch();
+    refetch();
+    onClose();
   };
 
   const onUserPressed = selectedUser => {
     setUser(selectedUser);
-    setModalVisible(true);    
+    setModalVisible(true);
   };
 
   const goBack = () => {
@@ -54,7 +54,7 @@ const UserManagementScreen = ({navigation}) => {
             {`${item.firstName} ${item.lastName}`}
           </Text>
           <Text numberOfLines={2} ellipsizeMode="tail" style={styles.itemType}>
-           {`${item.phone} - ${item.role}`}
+            {`${item.phone} - ${item.role}`}
           </Text>
         </View>
       </TouchableOpacity>

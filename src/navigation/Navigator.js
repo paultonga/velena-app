@@ -40,6 +40,7 @@ import AccountingScreen from '../screens/Accounting';
 import strings from '../localization';
 import VerifyScreen from '../screens/Verify';
 import ResetPassword from '../screens/ResetPassword';
+import ServicesManagement from '../screens/ServicesManagement';
 
 const AuthStack = () => (
   <Stack.Navigator>
@@ -260,6 +261,11 @@ export const AppNavigator = () => (
     <Stack.Screen
       name="Accounting"
       component={AccountingScreen}
+      options={{headerShown: false}}
+    />
+    <Stack.Screen
+      name="ServicesManagement"
+      component={ServicesManagement}
       options={{headerShown: false}}
     />
   </Stack.Navigator>

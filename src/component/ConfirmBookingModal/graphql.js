@@ -10,3 +10,14 @@ export const CONFIRM_BOOKING_MUTATION = gql`
     }
   }
 `;
+
+export const DELETE_BOOKING_MUTATION = gql`
+  mutation DeleteBooking($id: ID!) {
+    deleteBooking(
+      input: {id: $id}
+    ) {
+      success
+      message
+    }
+  }
+`;
